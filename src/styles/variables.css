@@ -1,0 +1,74 @@
+/* Importación de la fuente principal del programa */
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Rubik", sans-serif;
+  font-style: normal;
+}
+
+*::selection{
+  background-color: var(--colorTerciario);
+}
+
+::-webkit-scrollbar{
+  width: 6px;
+  border-radius: var(--borderRadiusInputs);
+}
+::-webkit-scrollbar-thumb{
+  background-color: var(--colorPrincipal);
+  border-radius: var(--borderRadiusInputs);
+}
+
+.scrollSecundario::-webkit-scrollbar-thumb{
+  background-color: var(--colorCuaternario);
+}
+
+:root{
+  --colorPrincipal: #08356E;
+  --colorSecundario: #8996A9;
+  --colorTerciario: #13D93E;
+  --colorCuaternario: #0AD0E9;
+  --colorAdicional: #9CACC4;
+  --colorSombras: #000;
+  --colorBlanco: #fff;
+
+  --sectionSize: 600px;
+  --cardSize: 200px;
+  --iconSize: 40px;
+  --iconSizeBig: 60px;
+
+  --iconHeaderSize: 45px;
+  --fontIconHeader: 1.7rem;
+  --borderRadiusForms: 45px;
+  --borderRadiusInputs: 25px;
+  --headerSize: 80px;
+
+  --timeTransition: 0.25s
+}
+
+/* Media Queries */
+@media (max-width: 1440px) {
+  :root{
+    --sectionSize: 500px;
+  }
+}
+
+@media (max-width: 930px) {
+  :root{
+    --headerSize: 60px;
+    --iconHeaderSize: 40px;
+    --fontIconHeader: 1.5rem;
+    --sectionSize: 400px;
+  }
+}
+
+@media (max-width: 720px) {
+  :root{
+    --headerSize: 60px;
+    --iconHeaderSize: 40px;
+    --fontIconHeader: 1.5rem;
+    --sectionSize: 400px;
+  }
+}

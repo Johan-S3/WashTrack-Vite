@@ -1,0 +1,302 @@
+@import url(variables.css);
+
+/* Estilo del body de la pagina */
+body{
+  display: grid;
+  grid-template-columns: 300px 1fr 300px;
+  grid-template-rows: var(--headerSize) 1fr; 
+}
+
+/* Estilos del header de la página */
+.header{
+  grid-column: 1/4;
+  width: calc(100vw);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--colorPrincipal);
+  height: var(--headerSize);
+  color: var(--colorBlanco);
+  padding: 0 50px;
+  position: relative;
+  z-index: 1;
+}
+
+
+/* Estilos para el apartado de informacion del usuarios y el acceso a paginas mediante los iconos */
+.header__info, .header__acces{
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 30px;
+  font-size: var(--fontIconHeader);
+}
+
+/* Estilo para el icono de usuario */
+.header__icon{
+  font-size: 3.5rem;
+}
+
+/* Estilo para los iconos del apartado de accesos */
+.acces__icon{
+  text-decoration: none;
+  display: flex;
+  height: var(--iconHeaderSize);
+  width: var(--iconHeaderSize);
+  justify-content: center;
+  align-items: center;
+  font-size: var(--fontIconHeader);
+  background-color: var(--colorTerciario);
+  color: var(--colorPrincipal);
+  border-radius: 50%;
+  transition: var(--timeTransition);
+}
+/* Hover para el los iconos de acceso */
+.acces__icon:hover{
+  scale: 1.2;
+  filter: drop-shadow(0px 0px 3px var(--colorSombras));
+}
+
+
+/* Estilos para los aside de la página */
+.aside{
+  height: calc(100vh - var(--headerSize));
+  width: 100%;
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  background-color: var(--colorSecundario);
+  filter: drop-shadow(5px 0px 5px var(--colorSombras));
+}
+/* Estilos determinado para el aside de historial */
+.aside--historial{
+  filter: drop-shadow(-5px 0px 5px var(--colorSombras));
+  background-color: var(--colorPrincipal);
+  color: var(--colorBlanco);
+  display: block;
+}
+
+/* Estilos para el apartado del contenido del aside y del apartado que contienen las filas de información */
+.aside__content, .content{
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+/* Estilos para los titulos que contienen los aside */
+.content__titulo{
+  text-align: center;
+  padding: 20px 0 10px 0;
+}
+
+/* Estilo para cada fila o celda dentro del contenedor del aside */
+.content__field{
+  padding: 10px 30px;
+  border-top: 1px solid var(--colorSombras);
+  transition: var(--timeTransition);
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+/* Estilos para la celda o fila del contenedor de los aside */
+.content__field--center, .content__field--centerCeleste{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  color: var(--colorBlanco);
+}
+/* Estilo determinado para color celeste de las filas o celdas del aside */
+.content__field--centerCeleste{
+  border-top: 1px solid var(--colorSecundario );
+}
+/* Estilos para hover de cada fila o celda */
+.content__field:hover{
+  background-color: var(--colorAdicional);
+}
+/* Estilos determinados para las celdads o filas centradas */
+.content__field--center:hover{
+  background-color: var(--colorSecundario);
+}
+/* Estilos determiandos para hover de filas o celdas centradas y de color celeste */
+.content__field--centerCeleste:hover{
+  background-color: var(--colorCuaternario);
+  color: var(--colorSombras);
+}
+
+/* Estilo al main de la view para ajustar tamaño minimo */
+.main{
+  max-height: calc(100vh - var(--headerSize));
+  min-width: 210px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+/* Estilos para los botones dentro del contenido del aside */
+.content__button{
+  text-align: center;
+  padding: 0.5rem;
+  width: 50%;
+  border: none;
+  border-radius: var(--borderRadiusInputs);
+  background-color: var(--colorTerciario);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--timeTransition);
+}
+/* Estilos para el link dentro del boton en el aside */
+.content__link{
+  text-decoration: none;
+  color: var(--colorSombras);
+}
+/* Estilo para hover de los botones contenidos en el aside */
+.content__button:hover{
+  filter: drop-shadow(0px 0px 3px var(--colorPrincipal));
+  scale: 1.05;
+}
+
+/* Estilo para el panelVehicle que contiene las cards con información de los vehiculos */
+.panel{
+  width: 100%;
+  padding: 2%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-rows: repeat(auto-fill, minmax(200px, 240px));
+  gap: 3%;
+  max-height: 50%;
+  overflow-y: auto;
+}
+
+/* Estilos para la card de con información del lavado */
+
+.panel__card{
+  width: var(--cardSize);
+  height: 200px;
+  border-radius: var(--borderRadiusInputs);
+  background-color: var(--colorAdicional);
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  /* height: min-content; */
+  color: var(--colorPrincipal);
+  padding: 5%;
+}
+
+.panel__card--active{
+  background-color: var(--colorSecundario);
+}
+
+.card__information, .card__washer{
+  font-size: 18px;
+  grid-column: 1/3;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+}
+
+.card__icon{
+  text-align: right;
+  font-size: 18px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.card__plate, .card__space{
+  grid-column: 1/3;
+  text-align: center;
+  font-size: 30px;
+}
+
+.card__space{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 18px;
+}
+
+.space__icon{
+  width: var(--iconSize);
+  height: var(--iconSize);
+  display: flex;
+  font-size: 20px;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--colorTerciario);
+  color: var(--colorSombras);
+  border-radius: 50%;
+  transition: var(--timeTransition);
+  text-decoration: none;
+}
+
+.space__icon--scale{
+  background-color: var(--colorPrincipal);
+  color: var(--colorBlanco);
+  scale: 1.2;
+}
+
+.space__icon:hover{
+  filter: drop-shadow(0px 0px 5px var(--colorPrincipal));
+}
+
+.card__washer{
+  justify-content: end;
+  align-items: end;
+  gap: 10px;
+}
+
+.panel__card--add{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.space__icon--big{
+  width: var(--iconSizeBig);
+  height: var(--iconSizeBig);
+  font-size: var(--iconSize);
+  color: var(--colorPrincipal);
+}
+
+.space__icon--big:hover{
+  scale: 1.2;
+  filter: drop-shadow(0px 0px 5spx var(--colorTerciario));
+}
+
+/* Media Queries */
+@media (max-width: 1440px) {
+  body{
+    grid-template-columns: 250px 1fr 250px;
+  }
+}
+
+@media (max-width: 930px) {
+  body{
+    grid-template-columns: 250px 1fr;
+  }
+
+  .aside--historial{
+    width: 0;
+    height: 0;
+  }
+}
+
+@media (max-width: 720px) {
+  body{
+    grid-template-rows: 60px 1fr;
+  }
+  .asideGestion{
+    width: 0;
+    height: 0;
+  }
+
+  .main{
+    grid-column: 1/3;
+    grid-row: 2/3;
+  }
+
+  .header__info{
+    font-size: 16px;
+  }
+}

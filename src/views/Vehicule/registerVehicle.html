@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro Vehiculo</title>
+  <link rel="stylesheet" href="CSS/formularios.css">
+</head>
+
+<body>
+  <main class="main">
+    <img class="main__logo main__logo--header" src="Imagenes/Recurso 2.png" alt="">
+    <h1 class="main__title">Registro de vehiculo</h1>
+    <form class="form form--large" action="">
+      <div class="form__space">
+        <label class="form__label" for="placa">Placa:</label>
+        <input class="form__input" type="text" name="placa" placeholder="AAA00A">
+      </div>
+      <div class="form__space">
+        <label class="form__label" for="cedula:">Cedula Propietario:</label>
+        <input class="form__input" type="number" name="Cedula" placeholder="22222222">
+      </div>
+      <div class="form__space">
+        <label class="form__label" for="marca:">Marca:</label>
+        <input class="form__input" type="text" name="marca" placeholder="BMW">
+      </div>
+      <div class="form__space">
+        <label class="form__label" for="nombre">Nombre:</label>
+        <input class="form__input" type="text" name="nombre" placeholder="ej: Juan Perez">
+      </div>
+      <div class="form__space">
+        <label class="form__label" for="modelo">Modelo:</label>
+        <input class="form__input" type="number" name="modelo" placeholder="2025">
+      </div>
+      <div class="form__space">
+        <label class="form__label" for="telefono">Telefono:</label>
+        <input class="form__input" type="number" name="telefono" placeholder="123 456 7890">
+      </div>
+      <div class="form__space">
+        <label class="form__label" for="type">Tipo de vehiculo:</label>
+        <select class="form__select" name="type" id="">
+          <option>Seleccione un tipo</option>
+          <option value="1">Moto</option>
+          <option value="2">Carro</option>
+          <option value="3">Camioneta</option>
+        </select>
+      </div>
+      <div class="form__space">
+        <label class="form__label" for="clave">Clave (Opcional):</label>
+        <input class="form__input" type="text" name="clave" placeholder="****">
+      </div>
+
+      <div class="form__space form__space--button">
+        <button class="form__button" type="submit">
+          <a class="form__acces" href="inicio.html">Registrar</a>
+        </button>
+
+      </div>
+
+    </form>
+  </main>
+</body>
+
+</html>

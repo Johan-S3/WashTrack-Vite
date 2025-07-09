@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrar usuario</title>
+  <link rel="stylesheet" href="../../styles/formularios.css">
+  <link rel="shortcut icon" href="../../images/Recurso 2.png" type="image/x-icon">
+</head>
+
+<body>
+  <main class="main">
+    <img class="main__logo main__logo--header" src="../../images/Recurso 2.png" alt="">
+    <h1 class="main__title">Ingrese sus datos</h1>
+    <form class="form form--large" id="form-Registro" action="" novalidate>
+      <div class="form__space">
+        <label class="form__label" for="cedula">Cedula:</label>
+        <input class="form__input" type="text" name="cedula" placeholder="22222222" required>
+      </div>
+      <div class="form__space">
+        <label class="form__label" for="nombre:">Nombre:</label>
+        <input class="form__input" type="text" name="nombre" placeholder="ej: Juan Perez" required>
+      </div>
+      <div class="form__space">
+        <label class="form__label" for="correo">Correo electronico:</label>
+        <input class="form__input" type="email" name="correo" placeholder="example@example.com" required>
+      </div>
+      <div class="form__space">
+        <label class="form__label" for="telefono">Telefono:</label>
+        <input class="form__input" type="text" name="telefono" placeholder="123 456 7890" required>
+      </div>
+      <div class="form__space">
+        <label class="form__label" for="rol">Rol de usuario:</label>
+        <select class="form__select" name="rol" id="" required>
+          <option>Seleccione un rol</option>
+          <option value="1">Administrador</option>
+          <option value="2">Gerente</option>
+        </select>
+      </div>
+      <div class="form__space">
+        <label class="form__label" for="contrasenia">Contraseña:</label>
+        <input class="form__input" type="password" name="contrasenia" placeholder="Ingrese su contraseña" required>
+      </div>
+
+      <div class="form__space form__space--button">
+        <button class="form__button" type="submit">Registrar</button>
+
+        <div class="form__links">
+          <a class="form__link" href="../../../index.html">¿Ya tienes una cuenta?</a>
+        </div>
+      </div>
+
+    </form>
+  </main>
+  <script type="module" src="./registroController.js"></script>
+</body>
+
+</html>

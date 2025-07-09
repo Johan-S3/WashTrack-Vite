@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio</title>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../../src/styles/inicio.css">
+</head>
+
+<body>
+  <header class="header">
+    <div class="header__acces acces">
+      <a class="acces__icon" href="../../src/views/Lavados/lavados.html">
+        <i class="ri-car-washing-fill"></i>
+      </a>
+      <a class="acces__icon" href="../../src/views/Lavadores/lavadores.html">
+        <i class="ri-team-fill"></i>
+      </a>
+      <a class="acces__icon" href="../../src/views/Vehicule/registerVehicle.html">
+        <i class="ri-add-circle-fill"></i>
+      </a>
+    </div>
+    <div class="header__info">
+      <h2 class="header__nameUser">Nombre de usuario</h2>
+      <i class="ri-account-circle-line header__icon"></i>
+    </div>
+  </header>
+  <aside class="aside asideGestion">
+    <div class="aside__content">
+      <h2 class="content__titulo">Tipos de lavados</h2>
+      <div class="content">
+        <Span class="content__field">ID: 1 | Basico - Car</Span>
+        <Span class="content__field">ID: 2 | Motor - Car</Span>
+        <Span class="content__field">ID: 3 | Tapiceria - Car</Span>
+        <Span class="content__field">ID: 4 | Basico - Moto</Span>
+        <Span class="content__field">ID: 4 | Basico - Moto</Span>
+        <Span class="content__field">ID: 4 | Basico - Moto</Span>
+        <Span class="content__field">ID: 4 | Basico - Moto</Span>
+        <Span class="content__field">ID: 4 | Basico - Moto</Span>
+        <Span class="content__field">ID: 4 | Basico - Moto</Span>
+      </div>
+      <div class="content__field content__field--center">
+        <button class="content__button">
+          <a class="content__link" href="../../src/views/Lavados/lavados.html">Gestionar</a>
+        </button>
+      </div>
+    </div>
+    <div class="aside__content">
+      <h2 class="content__titulo">Lavadores</h2>
+      <div class="content">
+        <Span class="content__field">ID: 101 | Andres</Span>
+        <Span class="content__field">ID: 102 | Felipe</Span>
+        <Span class="content__field">ID: 203 | Willian</Span>
+      </div>
+      <div class="content__field content__field--center">
+        <button class="content__button">
+          <a class="content__link" href="../../src/views/Lavadores/lavadores.html">Gestionar</a>
+        </button>
+      </div>
+    </div>
+
+  </aside>
+
+  <main class="main">
+    <div class="panel">
+      <div class="panel__card panel__card--add">
+        <a class="space__icon space__icon--big" href="../../src/views/Vehicule/registerVehicle.html">
+          <i class="ri-add-circle-fill"></i>
+        </a>
+      </div>
+
+      <div class="panel__card card">
+        <div class="card__information">
+          <small class="card__vehicle">Moto</small>
+          <i class="ri-delete-bin-6-fill card__icon"></i>
+        </div>
+        <strong class="card__plate">HLH02H</strong>
+        <div class="card__space space">
+          <a class="space__icon" href="../../src/views/Vehicule/registerVehicle.html">
+            <i class="ri-edit-2-line"></i>
+          </a>
+          <a class="space__icon space__icon--scale" href="asignarLavado.html">
+            <i class="ri-car-washing-fill"></i>
+          </a>
+        </div>
+        <div class="card__washer">
+          <small>Felipe</small>
+          <i class="ri-user-5-fill card__icon"></i>
+        </div>
+      </div>
+
+    </div>
+    <div class="panel">
+      <div class="panel__card panel__card--active card">
+        <div class="card__information">
+          <small class="card__vehicle">Moto</small>
+          <i class="ri-delete-bin-6-fill card__icon"></i>
+        </div>
+        <strong class="card__plate">ODS17H</strong>
+        <div class="card__space space">
+          <a class="space__icon" href="asignarLavado.html">
+            <i class="ri-edit-2-line"></i>
+          </a>
+          <a class="space__icon space__icon--scale" href="../../src/views/Pago/pago.html">
+            <i class="ri-money-dollar-circle-line"></i>
+          </a>
+        </div>
+        <div class="card__washer">
+          <small>Willian</small>
+          <i class="ri-user-5-fill card__icon"></i>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <aside class="aside aside--historial">
+    <div class="aside__content">
+      <h2 class="content__titulo">Historial</h2>
+      <div class="content scrollSecundario">
+        <Span class="content__field content__field--centerCeleste">Placa - JFU43D</Span>
+        <Span class="content__field content__field--centerCeleste">Placa - FKR643</Span>
+        <Span class="content__field content__field--centerCeleste">Placa - HTD45A</Span>
+        <Span class="content__field content__field--centerCeleste">Placa - FGH346</Span>
+        <Span class="content__field content__field--centerCeleste">Placa - 567GSD</Span>
+        <Span class="content__field content__field--centerCeleste">Placa - HEB53H</Span>
+        <Span class="content__field content__field--centerCeleste">Placa - SDS434</Span>
+        <Span class="content__field content__field--centerCeleste">Placa - FDE45E</Span>
+      </div>
+    </div>
+  </aside>
+</body>
+
+</html>

@@ -1,0 +1,72 @@
+@import url(formularios.css);
+
+.table{
+  min-width: min-content;
+  max-width: 50%;
+  border-collapse: collapse;
+  border: none;
+  border-radius: var(--borderRadiusInputs);
+  overflow: hidden;
+  box-shadow: 0px 2px 10px var(--input);
+}
+
+.table__head{
+  background-color: var(--colorCuaternario);
+}
+
+.table__body{
+  background-color: var(--colorAdicional);
+  text-align: center;
+}
+
+.table__cell{
+  padding: 10px 15px;
+}
+.table__cell--separate{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+.table__cell--text{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+.table__row{
+  border-top: 2px solid var(--colorPrincipal);
+  transition: var(--timeTransition);
+}
+.table__row:hover{
+  background-color: var(--colorSecundario);
+}
+
+.table__button{
+  height: 35px;
+  width: 35px;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  background-color: var(--colorTerciario);
+  color: var(--colorPrincipal);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: var(--timeTransition);
+}
+.table__button--delete{
+  background-color: var(--colorPrincipal);
+  color: var(--colorBlanco);
+}
+
+.table__button:hover{
+  filter: drop-shadow(0px 0px 3px var(--colorSombras));
+}
+
+@media (max-width: 930px) {
+  .table{
+    max-width: 70%;
+  }
+}
