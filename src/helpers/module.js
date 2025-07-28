@@ -52,7 +52,7 @@ export const validarFormulario = (e) => {
             campo.classList.add("form__input--empty");
             let mensaje = document.createElement("span");
             mensaje.classList.add("form__mensaje");
-            mensaje.textContent = `El campo ${nameCampo} es obligatorio.`;
+            mensaje.textContent = `El campo es obligatorio.`;
             campo.insertAdjacentElement("afterend", mensaje);
             isValid = false;
           }
@@ -64,7 +64,7 @@ export const validarFormulario = (e) => {
           campo.classList.add("form__input--empty");
           let mensaje = document.createElement("span");
           mensaje.classList.add("form__mensaje");
-          mensaje.textContent = `Debe seleccionar una opción de ${nameCampo}`;
+          mensaje.textContent = `Debe seleccionar una opción`;
           campo.insertAdjacentElement("afterend", mensaje);
           isValid = false;
         }
@@ -95,9 +95,9 @@ export const outFocus = (event) => {
 };
 
 // FUNCIÓN PARA LIMITAR EL NÚMERO DE CARACTERES EN UN INPUT
-export const limitar = (event) => {
-  if (event.target.value.length === 10) {
-    event.preventDefault();
+export const limitar = (e, limite) => {
+  if (e.target.value.length === limite) {
+    e.preventDefault();
   }
 };
 
@@ -122,3 +122,10 @@ export const limitar = (event) => {
 export const validarCaracteres = (event) => {
   if (!regexCaracteres.test(event.key) && !teclasEspeciales.includes(event.key)) event.preventDefault();
 };
+
+// VALIDACIÓN DE FORMATO DE CORREO
+export const validarCorreo = (correo) => {
+  const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regexCorreo.test(correo.trim());
+};
+

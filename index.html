@@ -1,46 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Iniciar Sesion</title>
-  <link rel="stylesheet" href="src/styles/style.css">
-  <link rel="shortcut icon" href="src/images/Recurso 2.png" type="image/x-icon">
+  <title>Document</title>
 </head>
-
-<body>
-  <main class="main">
-    <img class="main__logo" src="src/images/Recurso 2.png" alt="">
-    <div class="main__inf">
-      <h1 class="main__title title">
-        <span class="title__high">W</span>ash
-        <span class="title__high">T</span>rack
-      </h1>
-      <p class="main__text">Gestión de tu lavadero de vehiculos</p>
-    </div>
-  </main>
-  <section class="section">
-    <form class="form" action="" id="form-Login" novalidate>
-      <h2 class="form__title">Iniciar Sesión</h2>
-      <div class="form__space">
-        <label class="form__label" for="documento">Numero de documento:</label>
-        <input class="form__input" type="text" name="documento" placeholder="222222222" required>
-      </div>
-      <div class="form__space">
-        <label class="form__label" for="contrasenia">Contraseña:</label>
-        <input class="form__input" type="password" name="contrasenia" placeholder="Ingrese su contraseña" required>
-      </div>
-
-      <button class="form__button" type="submit">Acceder</button>
-
-      <div class="form__links">
-        <a class="form__link" href="">¿Olvidaste la contraseña?</a>
-        <a class="form__link" href="src/views/Register/registro.html">Nuevo usuario</a>
-      </div>
-    </form>
-  </section>
-  <script type="module" src="src/views/Login/loginController.js"></script>
+<body id="app">
+  <script type="module" src="./src/main.js"></script>
 </body>
-
 </html>

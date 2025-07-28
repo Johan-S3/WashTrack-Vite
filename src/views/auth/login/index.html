@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesion</title>
+  <link rel="shortcut icon" href="src/images/Recurso 2.png" type="image/x-icon">
+</head>
+
+<body>
+  <main class="contenido">
+    <img class="contenido__logo" src="src/images/Recurso 2.png" alt="">
+    <div class="contenido__inf">
+      <h1 class="contenido__title title">
+        <span class="title__high">W</span>ash
+        <span class="title__high">T</span>rack
+      </h1>
+      <p class="contenido__text">Gestión de tu lavadero de vehiculos</p>
+    </div>
+  </main>
+  <section class="section">
+    <form class="formLogin" action="" id="form-Login" novalidate>
+      <h2 class="formLogin__title">Iniciar Sesión</h2>
+      <div class="formLogin__space">
+        <label class="formLogin__label" for="documento">Numero de documento:</label>
+        <input class="formLogin__input" type="text" name="documento" placeholder="222222222" required>
+      </div>
+      <div class="formLogin__space">
+        <label class="formLogin__label" for="contrasenia">Contraseña:</label>
+        <input class="formLogin__input" type="password" name="contrasenia" placeholder="Ingrese su contraseña" required>
+      </div>
+
+      <button class="formLogin__button" type="submit">Acceder</button>
+
+      <div class="formLogin__links">
+        <a class="formLogin__link" href="">¿Olvidaste la contraseña?</a>
+        <a class="formLogin__link" href="#/register">Nuevo usuario</a>
+      </div>
+    </form>
+  </section>
+</body>
+
+</html>

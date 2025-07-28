@@ -1,8 +1,32 @@
-@import url(formularios.css);
+@import url(variables.css);
+.contenedor_tabla{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 50px 0;
+  overflow-y: auto;
+  gap: 5%;
+}
+
+.table, .table__header{
+  width: 100%;
+  max-width: 60%;
+}
+
+.table__header{
+  display: flex;
+  justify-content: space-between;
+}
+.table__title{
+  font-size: 2.5rem;
+  color: var(--colorTerciario);
+}
 
 .table{
-  min-width: min-content;
-  max-width: 50%;
+  height: min-content;
   border-collapse: collapse;
   border: none;
   border-radius: var(--borderRadiusInputs);
@@ -10,8 +34,9 @@
   box-shadow: 0px 2px 10px var(--input);
 }
 
+
 .table__head{
-  background-color: var(--colorCuaternario);
+  background-color: var(--colorTerciario);
 }
 
 .table__body{
@@ -38,6 +63,7 @@
 .table__row{
   border-top: 2px solid var(--colorPrincipal);
   transition: var(--timeTransition);
+  height: min-content;
 }
 .table__row:hover{
   background-color: var(--colorSecundario);
@@ -59,6 +85,16 @@
 .table__button--delete{
   background-color: var(--colorPrincipal);
   color: var(--colorBlanco);
+}
+
+.table__button--create{
+  width: auto;
+  height: auto;
+  padding: 0 20px;
+  border-radius: var(--borderRadiusInputs);
+  font-weight: 500;
+  background-color: var(--colorBlanco);
+  color: var(--colorTerciario);
 }
 
 .table__button:hover{

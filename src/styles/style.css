@@ -1,4 +1,7 @@
 @import url(variables.css);
+@import url(formularios.css);
+@import url(inicio.css);
+@import url(tables.css);
 
 body{
   height: 100vh;
@@ -9,22 +12,22 @@ body{
   align-items: center;
 }
 
-.main{
+.contenido{
   width: calc(100vw - var(--sectionSize));
   padding: 5%;
   display: flex;
   gap: 50px;
 }
-.main__logo{
+.contenido__logo{
   width: 300px;
   filter: drop-shadow(0px 10px 5px var(--colorSombras));
 }
-.main__inf{
+.contenido__inf{
   display: flex;
   flex-direction: column;
   justify-content: end;
 }
-.main__title{
+.contenido__title{
   font-size: 6.5rem;
   color: var(--colorAdicional);
 }
@@ -32,7 +35,7 @@ body{
   color: var(--colorTerciario);
   text-shadow: 0px 5px 2.5px var(--colorSombras);
 }
-.main__text{
+.contenido__text{
   display: inline-block;
   color: var(--colorAdicional);
   font-size: 1.8rem;
@@ -52,14 +55,14 @@ body{
 
 }
 
-.form{
+.formLogin{
   display: flex;
   flex-direction: column;
   padding: 3%;
   align-items: center;
   width: 75%;
 }
-.form__space{
+.formLogin__space{
   height: max-content;
   width: 100%;
   display: flex;
@@ -67,13 +70,13 @@ body{
   gap: 5px;
   position: relative;
 }
-.form__title{
+.formLogin__title{
   font-size: 40px;
   text-align: center;
   padding-bottom: 8%;
   color: var(--colorPrincipal);
 }
-.form__label{
+.formLogin__label{
   width: 100%;
   text-align: left;
   font-size: 1.5rem;
@@ -81,7 +84,7 @@ body{
   font-weight: 400;
 }
 
-.form__input, .form__select{
+.formLogin__input, .formLogin__select{
   width: 100%;
   font-size: 1.2rem;
   border-radius: var(--borderRadiusInputs);
@@ -90,21 +93,21 @@ body{
   border: none;
   transition: var(--timeTransition);
 }
-.form__input:focus{
+.formLogin__input:focus{
   filter: drop-shadow(0px 0px 4px var(--colorTerciario));
 }
 
-.form__input--empty{
+.formLogin__input--empty{
   filter: drop-shadow(0px 0px 4px red);
 }
-.form__mensaje{
+.formLogin__mensaje{
   color: red;
   position: absolute;
   top: 102%;
   left: 0;
 }
 
-.form__button{
+.formLogin__button{
   text-align: center;
   width: 50%;
   padding: 0.6rem;
@@ -118,59 +121,59 @@ body{
   cursor: pointer;
   transition: var(--timeTransition);
 }
-.form__button:hover{
+.formLogin__button:hover{
   filter: drop-shadow(0px 0px 5px var(--colorPrincipal));
 }
-.form__acces{
+.formLogin__acces{
   text-decoration: none;
   color: var(--colorBlanco);
 }
 
 
 
-.form__links{
+.formLogin__links{
   margin-top: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
 }
-.form__link{
+.formLogin__link{
   color: var(--colorPrincipal);
   font-weight: 430;
   transition: var(--timeTransition);
   font-size: 0.9rem;
 }
-.form__link:hover{
+.formLogin__link:hover{
   color: var(--colorTerciario);
 }
 
 
 /* Media Queries */
 @media (max-width: 1440px) {
-  .main__title{
+  .contenido__title{
     font-size: 5.5rem;
   }
-  .main__text{
+  .contenido__text{
     font-size: 1.4rem;
   }
 }
 
 @media (max-width: 930px) {
-  .main{
+  .contenido{
     flex-direction: column;
     text-align: center;
     align-items: center;
   }
 
-  .main__logo{
+  .contenido__logo{
     width: 200px;
   }
 
-  .main__title{
+  .contenido__title{
     font-size: 5rem;
   }
-  .main__text{
+  .contenido__text{
     font-size: 1.2rem;
   }
 }
