@@ -1,4 +1,11 @@
 @import url(variables.css);
+.image{
+  display: block;
+  position: absolute;
+  width: 4rem;
+  bottom: calc(100% - 5rem);
+  right: calc(100% - 5rem);
+}
 .contenedor_tabla{
   width: 100%;
   height: 100%;
@@ -20,6 +27,7 @@
   display: flex;
   justify-content: space-between;
 }
+
 .table__title{
   font-size: 2.5rem;
   color: var(--colorTerciario);

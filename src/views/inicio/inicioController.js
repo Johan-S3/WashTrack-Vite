@@ -1,7 +1,9 @@
+import Swal from "sweetalert2";
+import { infoAlert } from "../../helpers/alertas";
 import { obtenerDatos } from "../../helpers/peticiones";
 
 // Variable en el que se almacenará un valor booleano para indicar si se puede agregar un vehiculo para asignar un lavado.
-let canCreate = false;
+let canCreate = true;
 
 export const inicioController = async (parametros = null) => {
     /* ------------------ VARIABLES ------------------  */
@@ -18,6 +20,21 @@ export const inicioController = async (parametros = null) => {
     cargarTipoLavados(tipoLavadosContent);
     cargarLavadores(lavadoresContent);
 
+    const haederAgregar = document.getElementById("header-vehiculo");
+    const cardAgregar = document.getElementById("card-vehiculo");
+
+    if(!canCreate){
+        haederAgregar.addEventListener("click",() => {
+            infoAlert("Aún no se puede realizar un registro.", "Deben haber tipos de lavados y lavadores agregados");
+        }); 
+        cardAgregar.addEventListener("click",() => {
+            infoAlert("Aún no se puede realizar un registro.", "Deben haber tipos de lavados y lavadores agregados");
+        }); 
+    }else{
+        haederAgregar.addEventListener("click", buscarVehiculo);
+        cardAgregar.addEventListener("click", buscarVehiculo);
+    }
+
     // Recibo los datos del usuario del localStorage
     const datosUsuario = JSON.parse(localStorage.getItem("usuario"));
     // console.log(datosUsuario);
@@ -29,6 +46,10 @@ export const inicioController = async (parametros = null) => {
     // Le asigno el contenido correspondiente a los selectores del nombre del usuario logeado y su rol.
     nameUser.textContent = datosUsuario.nombre;
     rolUser.textContent = data.nombre_rol;
+    
+
+    /* ------------------ EVENTOS ------------------  */
+    
 }
 
 
@@ -92,4 +113,27 @@ async function cargarLavadores(contendor){
     } catch (error) {
         console.log(error);
     }
+}
+
+async function buscarVehiculo() {
+    let placaBuscar =  await Swal.fire({
+    title: 'Ingresa la placa',
+    input: 'text',
+    inputLabel: 'Placa del vehiculo',
+    inputPlaceholder: 'Ej. AAA00A',
+    showCancelButton: true,
+    confirmButtonText: 'Aceptar',
+    cancelButtonText: 'Cancelar',
+    inputValidator: (value) => {
+      if (!value) {
+        return '¡Debes escribir algo!';
+      }
+    }
+  });
+
+  if(placaBuscar.isConfirmed){
+    const vehiculo = await obtenerDatos(`vehiculos/placa/${placaBuscar.value}`);
+    if(vehiculo.code == 200) window.location.href = `#/vehiculo/editar/placa=${placaBuscar.value}`;
+    else window.location.href = "#/vehiculo/crear";
+  }
 }

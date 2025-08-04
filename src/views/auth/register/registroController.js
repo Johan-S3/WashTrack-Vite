@@ -2,7 +2,7 @@
 // Realizo todas las importaciones correspondientes de las funciones necesarias.
 import { errorAlert, successAlert } from "../../../helpers/alertas.js";
 import { limitar, outFocus, validarCaracteres, validarCorreo, validarFormulario, validarLetras, validarNumeros } from "../../../helpers/module.js";
-import { obtenerDatos } from "../../../helpers/peticiones.js";
+import { crearDato, obtenerDatos } from "../../../helpers/peticiones.js";
 
 
 export const registroController = async (parametros = null) => {

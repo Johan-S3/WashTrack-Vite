@@ -50,9 +50,10 @@ const encontrarRuta = (routes, segmentos) => {
   let rutaEncontrada = false;
   let parametros = {};  
 
+
   if (segmentos.length === 3 && segmentos[2].includes("=")) {
     parametros = extraerParametros(segmentos[2]);
-    segmentos.pop(); // Quitamos el segmento de parámetros para procesar la ruta
+    segmentos.pop(); // Quitamos el segmento de parámetros para procesar la ruta    
   }
 
   // Recorremos los segmentos del hash para encontrar la ruta correspondiente

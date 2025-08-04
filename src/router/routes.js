@@ -1,7 +1,13 @@
 import { loginController } from '../views/auth/login/loginController.js'
 import { registroController } from '../views/auth/register/registroController.js'
 import { inicioController } from '../views/inicio/inicioController.js'
-import { tipoLavadosController } from '../views/lavados/listar/tipoLavadosController.js'
+import { actualizarLavadorController } from '../views/lavadores/actualizar/actualizarLavadoController.js'
+import { crearLavadoresController } from '../views/lavadores/crear/crearLavadoresController.js'
+import { lavadoresController } from '../views/lavadores/listar/lavadoresController.js'
+import { actualizarTipoLavadoController } from '../views/tipolavados/actualizar/actualizarTipoLavadoController.js'
+import { crearTipoLavadoController } from '../views/tipolavados/crear/crearTipoLavadoController.js'
+import { tipoLavadosController } from '../views/tipolavados/listar/tipoLavadosController.js'
+import { actualizarVehiculoControllador } from '../views/vehiculo/actualizar/actualizarVehiculoController.js'
 
 
 export const routes = {
@@ -25,40 +31,51 @@ export const routes = {
   lavadores:{    
     "/":{
       path: `lavadores/listar/index.html`,
-      controlador: "No",
+      controlador: lavadoresController,
       private: false
     },
     crear: {    
       path: `lavadores/crear/index.html`,
-      controlador: "no",
+      controlador: crearLavadoresController,
       private: false
     },
+    editar: {
+      path: `lavadores/actualizar/index.html`,
+      controlador: actualizarLavadorController,
+      private: false
+    }
   },
-  lavados: {
+  tipolavados: {
     "/":{
-      path: `lavados/listar/index.html`,
+      path: `tipolavados/listar/index.html`,
       controlador: tipoLavadosController,
       private: false
     },
     crear: {    
-      path: `lavados/crear/index.html`,
-      controlador: "no",
+      path: `tipolavados/crear/index.html`,
+      controlador: crearTipoLavadoController,
       private: false
     },
-    Editar: {
-      path: `Categorias/Editar/index.html`,
-      controlador: "no",
+    editar: {
+      path: `tipolavados/actualizar/index.html`,
+      controlador: actualizarTipoLavadoController,
       private: false
     }
   },
-
+  vehiculo:{    
+    crear: {    
+      path: `vehiculo/crear/index.html`,
+      controlador: "No",
+      private: false
+    },
+    editar: {    
+      path: `vehiculo/actualizar/index.html`,
+      controlador: actualizarVehiculoControllador,
+      private: false
+    }
+  },
   pago:{    
     path: "pago/index.html",
-    controlador: "No",
-    private: false
-  },
-  vehiculo:{    
-    path: "vehiculo/index.html",
     controlador: "No",
     private: false
   },

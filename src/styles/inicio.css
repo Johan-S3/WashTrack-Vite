@@ -64,6 +64,7 @@ body{
   color: var(--colorPrincipal);
   border-radius: 50%;
   transition: var(--timeTransition);
+  border: none;
 }
 /* Hover para el los iconos de acceso */
 .acces__icon:hover{
@@ -241,6 +242,7 @@ body{
   border-radius: 50%;
   transition: var(--timeTransition);
   text-decoration: none;
+  border: none;
 }
 
 .space__icon--scale{

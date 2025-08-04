@@ -1,4 +1,5 @@
-import { obtenerDatos } from "../../../helpers/peticiones";
+import { confirmAlert, errorAlert, successAlert } from "../../../helpers/alertas";
+import { eliminarDato, obtenerDatos } from "../../../helpers/peticiones";
 
 
 export const tipoLavadosController = async (parametros = null) => {
@@ -15,7 +16,7 @@ export const tipoLavadosController = async (parametros = null) => {
 
 
     /* ------------------ EVENTOS ------------------  */
-    // Agrego evento para cargar las entidades necesarias
+    // Agrego evento para cargar las la vista donde se crea un nuevo tipo de lavado.
 
     buttonCreate.addEventListener('click', cargarVistaCrear);
 }
@@ -31,7 +32,7 @@ async function cargarTipoLavados(contendor){
         // console.log(tiposLavados);
 
         // Si el codigo obtenido de la petición es 404 (Recurso no encontrado). Es decir, no hay tipos de lavados creados se le asigna a la variable canCreate el valor de false y se retorna-
-        if(tiposLavados.code == 404) window.location.href = "#/lavados/crear";
+        if(tiposLavados.code == 404) window.location.href = "#/tipolavados/crear";
 
         // Recorro los tipos de lavados obtenidos
         tiposLavados.data.forEach(tipoLavado => {
@@ -46,6 +47,9 @@ async function cargarTipoLavados(contendor){
 
         // Le agrego una clase a la fila.
         fila.classList.add("table__row");
+
+        // Le agrego a la fila el atributo que contiene el id de la tupla.
+        fila.setAttribute("data-id", tipoLavado.codigo_tipo_lavado)
 
         // Declaro y asigno a una variable un arreglo con las celdas de la fila
         const celdas = [celdaId, celdaNombre, celdaValor, celdaDuracion, celdaAcciones];
@@ -81,7 +85,26 @@ async function cargarTipoLavados(contendor){
         botonEliminar.append(iconoEliminar);
 
         // Agrego eventos a los botones
-        botonEditar.addEventListener("click", () => {
+        botonEditar.addEventListener("click", async () => {
+            const alerta = await confirmAlert("¿Desea actualizar el tipo de lavado?");
+
+            // Si es confirmada la aleta entonces se obtiene el id del atributo almacenado en el boton...
+            if(alerta.isConfirmed){
+                const idEditar = botonEditar.getAttribute("data-id");
+                window.location.href = `#/tipolavados/editar/id=${idEditar}`;
+            }
+        })
+
+        // Le agrego al boton eliminar el evento click en el cual se valida si se quiere eliminar el tipo de lavado
+        botonEliminar.addEventListener("click", async () => {
+            const alerta = await confirmAlert("¿Está seguro de eliminar el tipo de lavado?");
+
+            // Si es confirmada la aleta entonces se obtiene el id del atributo almacenado en el boton...
+            if(alerta.isConfirmed){
+                const idEliminar = botonEliminar.getAttribute("data-id");
+                // Y se llama a la función que elimina el tipo de lavado enviando como argumento el id a eliminar.
+                eliminarTipoLavado(idEliminar);
+            }
             
         })
 
@@ -95,11 +118,36 @@ async function cargarTipoLavados(contendor){
         contendor.append(fila);
         })
     } catch (error) {
+        // Muestro el error en la consola.
         console.log(error);
+    }
+}
+
+// Funcion para borrar de la base de datos el id y para eliminar la tupla en la tabla.
+async function eliminarTipoLavado(id) {
+    // Se realiza la peticion para obtener lavados por el id del tipo de lavado.
+    const tipoLavadoExist = await obtenerDatos(`lavados/tipolavado/${id}`);
+
+    // Si el codigo de respuesta de la peticion es 200. Es decir, existe un lavado con ese tipo de lavado relacionado.
+    if(tipoLavadoExist.code == 200){
+        // Muestro mensaje de error ya que no se puede eliminar ese tipo de lavado y retorno.
+        errorAlert("¡Ups! No se puede eliminar el tipo de lavado", "Este tipo de lavado ya pertenece a un lavado");
+        return;
+    }
+
+    // Se realiza la peticion para eliminar el tipo de lavado por el id.
+    const peticion = await eliminarDato("tipolavados", id);
+    // Si el codigo de la respuesta el 200. Es decir, el tipo de lavado ya se eliminó de la base de datos...
+    if (peticion.code == 200) {
+        // Obtengo la fila con el id del registro que se eliminó y la remuevo de la tabla.
+        const fila = document.querySelector(`[data-id = "${id}"]`)
+        fila.remove();
+        // Por ultimo muestro una alerta de exito indicando que el tipo de lavado se eliminó.
+        successAlert("Tipo de lavado eliminado correctamente");
     }
 }
 
 // Funcion para cargar los tipos de lavados en el elemento correspondiente
 async function cargarVistaCrear(){
-    window.location.href = "#/lavados/crear";
+    window.location.href = "#/tipolavados/crear";
 }
