@@ -11,6 +11,6 @@ export const actualizarVehiculoControllador = async (parametros = null) => {
 
     const vehiculo = await obtenerDatos(`vehiculos/placa/${placa}`);
 
-    placaVeh.disabled = true;;
+    placaVeh.disabled = true;
     placaVeh.value = vehiculo.data.placa;
 }

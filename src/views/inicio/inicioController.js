@@ -6,50 +6,52 @@ import { obtenerDatos } from "../../helpers/peticiones";
 let canCreate = true;
 
 export const inicioController = async (parametros = null) => {
-    /* ------------------ VARIABLES ------------------  */
+  /* ------------------ VARIABLES ------------------  */
+  
+  // Obtengo los elementos donde va el nombre el usuario y su rol por su clase
+  const nameUser = document.querySelector(".header__nameUser");
+  const rolUser = document.querySelector(".header__nameRol");
+  // Obtengo la referencia de los elementos donde se agregará la información de la base de datos
+  const tipoLavadosContent = document.getElementById("contenedor_tipo_lavados");
+  const lavadoresContent = document.getElementById("contenedor_lavadores");
+  const historialContent = document.getElementById("contenedor_historial");
+  
+  // Obtengo la referencia de los elementos botones donde me redirige al apartado donde se registra un vehiculo.
+  const haederAgregar = document.getElementById("header-vehiculo");
+  const cardAgregar = document.getElementById("card-vehiculo");
 
-    // Obtengo los elementos donde va el nombre el usuario y su rol por su clase
-    const nameUser = document.querySelector(".header__nameUser");
-    const rolUser = document.querySelector(".header__nameRol");
+  // Llamo las funciones donde se cargan las entidades enviando como argumento el elemento donde se deben cargar respectivamente.
+  cargarTipoLavados(tipoLavadosContent);
+  cargarLavadores(lavadoresContent);
 
-    // Obtengo la referencia de los elementos donde se agregará la información de la base de datos
-    const tipoLavadosContent = document.getElementById("contenedor_tipo_lavados");
-    const lavadoresContent = document.getElementById("contenedor_lavadores");
-    const historialContent = document.getElementById("contenedor_historial");
-    // Llamo las funciones donde se cargan las entidades enviando como argumento el elemento donde se deben cargar respectivamente.
-    cargarTipoLavados(tipoLavadosContent);
-    cargarLavadores(lavadoresContent);
+  // Si la variable canCreate es contienen un valor falso...
+  if (!canCreate) {
+    // Agrego eventos a los botones que permite crear un vehiculo que al dar click muestre mensaje de información para no crear vehiculo.
+    haederAgregar.addEventListener("click",() => {
+      infoAlert("Aún no se puede realizar un registro.", "Deben haber tipos de lavados y lavadores agregados");
+    }); 
+    cardAgregar.addEventListener("click",() => {
+      infoAlert("Aún no se puede realizar un registro.", "Deben haber tipos de lavados y lavadores agregados");
+    }); 
+  } else { //Si el valor de la variable es true entonces...
+    // Agrego evento a los botones que al dar click llama a la función buscarVehiculo.
+    haederAgregar.addEventListener("click", buscarVehiculo);
+    cardAgregar.addEventListener("click", buscarVehiculo);
+  }
 
-    const haederAgregar = document.getElementById("header-vehiculo");
-    const cardAgregar = document.getElementById("card-vehiculo");
-
-    if(!canCreate){
-        haederAgregar.addEventListener("click",() => {
-            infoAlert("Aún no se puede realizar un registro.", "Deben haber tipos de lavados y lavadores agregados");
-        }); 
-        cardAgregar.addEventListener("click",() => {
-            infoAlert("Aún no se puede realizar un registro.", "Deben haber tipos de lavados y lavadores agregados");
-        }); 
-    }else{
-        haederAgregar.addEventListener("click", buscarVehiculo);
-        cardAgregar.addEventListener("click", buscarVehiculo);
-    }
-
-    // Recibo los datos del usuario del localStorage
-    const datosUsuario = JSON.parse(localStorage.getItem("usuario"));
-    // console.log(datosUsuario);
-
-    // En una variable almaceno los datos de la respuesta de hacer fetch a la ruta que me consulta un rol por ID.
-    const {data} = await obtenerDatos(`roles/${datosUsuario.codigo_rol}`);
-    // console.log(data);
-    
-    // Le asigno el contenido correspondiente a los selectores del nombre del usuario logeado y su rol.
-    nameUser.textContent = datosUsuario.nombre;
-    rolUser.textContent = data.nombre_rol;
-    
-
-    /* ------------------ EVENTOS ------------------  */
-    
+  // Recibo los datos del usuario del localStorage
+  const datosUsuario = JSON.parse(localStorage.getItem("usuario"));
+  // console.log(datosUsuario);
+// En una variable almaceno los datos de la respuesta de hacer fetch a la ruta que me consulta un rol por ID.
+  const {data} = await obtenerDatos(`roles/${datosUsuario.codigo_rol}`);
+  // console.log(data);
+  
+  // Le asigno el contenido correspondiente a los selectores del nombre del usuario logeado y su rol.
+  nameUser.textContent = datosUsuario.nombre;
+  rolUser.textContent = data.nombre_rol;
+  
+  /* ------------------ EVENTOS ------------------  */
+  
 }
 
 
@@ -57,32 +59,32 @@ export const inicioController = async (parametros = null) => {
 
 // Funcion para cargar los tipos de lavados en el elemento correspondiente
 async function cargarTipoLavados(contendor){
-    try {
-        // Asigno en una variable la respuesta de la peticion de los tipos de lavados
-        const tiposLavados = await obtenerDatos("tipolavados");
-        // console.log(tiposLavados);
-
-        // Si el codigo obtenido de la petición es 404 (Recurso no encontrado). Es decir, no hay tipos de lavados creados se le asigna a la variable canCreate el valor de false y se retorna-
-        if(tiposLavados.code == 404){
-            canCreate = false;
-            return
-        }
-        
-        // Le asigno a la variable canCreate true lo que indica que se puede registrar un vehiculo para asignar un lavado.
-        canCreate = true;
-        // Recorro los tipos de lavados obtenidos
-        tiposLavados.data.forEach(tipoLavado => {
-        // Creo un nuevo elemento span le agrego una clase y le agrego contenido que es el nombre del tipo de lavado
-        const span = document.createElement('span');
-        span.classList.add("content__field");
-        span.textContent = tipoLavado.nombre;
-        
-        // Por ultimo agrego el span al contendor de los tipos de lavados. 
-        contendor.append(span);
-        })
-    } catch (error) {
-        console.log(error);
+  try {
+    // Asigno en una variable la respuesta de la peticion de los tipos de lavados
+    const tiposLavados = await obtenerDatos("tipolavados");
+    // console.log(tiposLavados);
+    
+    // Si el codigo obtenido de la petición es 404 (Recurso no encontrado). Es decir, no hay tipos de lavados creados se le asigna a la variable canCreate el valor de false y se retorna-
+    if(tiposLavados.code == 404){
+      canCreate = false;
+      return
     }
+     
+    // Le asigno a la variable canCreate true lo que indica que se puede registrar un vehiculo para asignar un lavado.
+    canCreate = true;
+    // Recorro los tipos de lavados obtenidos
+    tiposLavados.data.forEach(tipoLavado => {
+      // Creo un nuevo elemento span le agrego una clase y le agrego contenido que es el nombre del tipo de lavado
+      const span = document.createElement('span');
+      span.classList.add("content__field");
+      span.textContent = tipoLavado.nombre;
+    
+      // Por ultimo agrego el span al contendor de los tipos de lavados. 
+      contendor.append(span);
+    })
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 // Funcion para cargar los lavadores en el elemento correspondiente
@@ -116,8 +118,9 @@ async function cargarLavadores(contendor){
 }
 
 async function buscarVehiculo() {
+  // Le asigno a una variable el valor ingresado por medio de un Swall
     let placaBuscar =  await Swal.fire({
-    title: 'Ingresa la placa',
+    title: 'Ingrese la placa',
     input: 'text',
     inputLabel: 'Placa del vehiculo',
     inputPlaceholder: 'Ej. AAA00A',
@@ -131,9 +134,13 @@ async function buscarVehiculo() {
     }
   });
 
-  if(placaBuscar.isConfirmed){
+  // Si el swal se confirmó...
+  if (placaBuscar.isConfirmed) {
+    // Asigno a una varaible la respuesta de la peticion de buscar  un vehiculo por la palca ingresada.
     const vehiculo = await obtenerDatos(`vehiculos/placa/${placaBuscar.value}`);
-    if(vehiculo.code == 200) window.location.href = `#/vehiculo/editar/placa=${placaBuscar.value}`;
-    else window.location.href = "#/vehiculo/crear";
+    // Si el codigo de la peticion es 200 es decir, obtenido con exito entonces redirige a la pagina donde se actualizará la informacion del vehiculo.
+    if (vehiculo.code == 200) window.location.href = `#/vehiculo/editar/placa=${placaBuscar.value}`;
+    // Si el codigo de la peticion no es 200 entonces redirige a la pagina donde se crear un nuevo vehiculo.
+    else window.location.href = `#/vehiculo/crear/placa=${placaBuscar.value}`;
   }
 }

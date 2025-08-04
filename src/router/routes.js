@@ -8,6 +8,7 @@ import { actualizarTipoLavadoController } from '../views/tipolavados/actualizar/
 import { crearTipoLavadoController } from '../views/tipolavados/crear/crearTipoLavadoController.js'
 import { tipoLavadosController } from '../views/tipolavados/listar/tipoLavadosController.js'
 import { actualizarVehiculoControllador } from '../views/vehiculo/actualizar/actualizarVehiculoController.js'
+import { crearVehiculoControllador } from '../views/vehiculo/crear/crearVehiculoController.js'
 
 
 export const routes = {
@@ -65,7 +66,7 @@ export const routes = {
   vehiculo:{    
     crear: {    
       path: `vehiculo/crear/index.html`,
-      controlador: "No",
+      controlador: crearVehiculoControllador,
       private: false
     },
     editar: {    

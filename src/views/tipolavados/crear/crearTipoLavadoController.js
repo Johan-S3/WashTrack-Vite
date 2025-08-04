@@ -52,7 +52,7 @@ export const crearTipoLavadoController = async (parametros = null) => {
       const respuesta = await crearDato("tipolavados", tipoLavado);  
       
       // Si la petición NO se realizó con exito...
-      if(respuesta != 201){
+      if(respuesta.code != 201){
         let error = null; //Declaro variable error e inicializo en null para luego almacenar el error.
         if(Array.isArray(respuesta.errors)) error = respuesta.errors[0]; //Si lo errores obtenidos de la peticion es un arreglo entonces almaceno en la variable error el primer error del arreglo.
         else error = respuesta.errors //Si no es un arreglo solo alamceno el error obtenido en la varaible.
