@@ -1,3 +1,4 @@
+import { errorAlert, successAlert } from "../../../helpers/alertas";
 import { limitar, outFocus, validarFormulario, validarLetras, validarNumeros } from "../../../helpers/module";
 import { crearDato, editarDato, obtenerDatos } from "../../../helpers/peticiones";
 
@@ -7,7 +8,11 @@ let idPiloto = 0;
 
 export const crearVehiculoControllador = async (parametros = null) => {
 
+  // Obtengo la placa del parametro recibido.
   const { placa } = parametros;
+
+  // Creo una variable temporal que me guardará el id del vehiculo creado.
+  let idVehiculoCreado = null; // ✅ Guarda el ID del vehículo ya creado
   
   // Obtengo la referencia del formulario por el ID
   const formRegistro = document.getElementById("form-Registro");
@@ -24,7 +29,9 @@ export const crearVehiculoControllador = async (parametros = null) => {
   const nombre = document.querySelector('input[name="nombre"]');
   const telefono = document.querySelector('input[name="telefono"]');
 
+  // Le asigno a la entra de texto de la placa la placa recibida como parametro.
   placaVeh.value = placa.toUpperCase();
+  // Deshabilito la entrada de texto de la placa.
   placaVeh.disabled = true;
   
   // Llamo a las funciones donde cargo los tipos de vehiculos y los servicios registrados en la base de datos en los elementos correspondientes.
@@ -50,8 +57,12 @@ export const crearVehiculoControllador = async (parametros = null) => {
       // Le asigno a la variable existePiloto el valor de true, que indica que el piloto si existe en la base de datos con ese numero de cedula. Y a la variable idPiloto el id del propietario existente obtenido.
       existePiloto = true;
       idPiloto = data.id
+    }else{
+      // Si el codigo de la peticion no es 200. Es decir que no exite. Entonces, le asigno a las entradas de texto nombre y telefono un valor vacio.
+      nombre.value = "";
+      telefono.value = "";
     }
-    console.log(pilotoRes); 
+    // console.log(pilotoRes); 
   })
 
   // Agrego eventos para permitir solo la entradas de numeros, letras y caracteres a los campos correspondientemente.
@@ -102,34 +113,80 @@ export const crearVehiculoControllador = async (parametros = null) => {
       telefono: telefono.value
     }  
 
+    // Creo un objeto ingreso con su atributo de codigo de servicio. Los demas atributos se agregarán de acuerdo al resultado de las peticiones siguientes.
     let ingreso = {
       codigo_servicio: servicioVeh.value
     };
 
     // Try..catch para poder ver el error.
     try {
-      // En una variable almaceno la respuesta de hacer fetch a la ruta que crea el vehiculo.
-      const vehiculoCreado = await crearDato(`vehiculos`, vehiculo); 
-      console.log(vehiculoCreado);
-
-      if (existePiloto) {
+      if(!idVehiculoCreado){
         // En una variable almaceno la respuesta de hacer fetch a la ruta que crea el vehiculo.
+        const vehiculoCreado = await crearDato(`vehiculos`, vehiculo); 
+        // console.log(vehiculoCreado);
+        
+        // Si el codigo de la peticion no es 201. Es decir no se creó el dato entonces llamo la funcion que muestra los errores enviando la respuesta de la peticion.
+        // Y retorno para no seguir ejecutando el codigo.
+        if(vehiculoCreado.code != 201){
+          mostrarErrores(vehiculoCreado);
+          return;
+        }
+  
+        // Asigno a varaible temporal el id del vehiculo
+        idVehiculoCreado = vehiculoCreado.data.id;
+      }
+
+      // Creo la propiedad id_vehiculo en el objeto ingreso y le asigno el id de la data al crear el vehiculo
+      ingreso.id_vehiculo = idVehiculoCreado;
+      
+      // Si existePiloto es true. Es decir, la cedula que se ingreso en el campo cedula ya existe entonces...
+      if (existePiloto) {
+        // En una variable almaceno la respuesta de hacer fetch a la ruta que actualiza el propietario o piloto del vehiculo.
         const pilotoActualizado = await editarDato(`propietariosvehiculos`, idPiloto , piloto); 
-        console.log(pilotoActualizado);
+        // console.log(pilotoActualizado);
+
+        // Si el codigo de la peticion no es 200. Es decir no se actualizó el dato entonces llamo la funcion que muestra los errores enviando la respuesta de la peticion.
+        // Y retorno para no seguir ejecutando el codigo.
+        if(pilotoActualizado.code != 200){
+          mostrarErrores(pilotoActualizado);
+          return;
+        }
+
+        // Creo la propiedad id_duenio_vehiculo en el objeto ingreso y le asigno el id del piloto obtenido anteriormente.
+        ingreso.id_duenio_vehiculo = idPiloto;
       } else {
         // En una variable almaceno la respuesta de hacer fetch a la ruta que crea el propietario, piloto o dueño del vehiculo.
         const pilotoCreado = await crearDato(`propietariosvehiculos`, piloto); 
-        console.log(pilotoCreado);
-        
+        // console.log(pilotoCreado);
+
+        // Si el codigo de la peticion no es 201. Es decir no se creó el dato entonces llamo la funcion que muestra los errores enviando la respuesta de la peticion.
+        // Y retorno para no seguir ejecutando el codigo.
+        if(pilotoCreado.code != 201){
+          mostrarErrores(pilotoCreado);
+          return;
+        }
+
+        // Creo la propiedad id_duenio_vehiculo en el objeto ingreso y le asigno el id de la data al crear el piloto o propietario.
+        ingreso.id_duenio_vehiculo = pilotoCreado.data.id;
       }
-      
+
+      // En una variable almaceno la respuesta de hacer fetch a la ruta que crea el ingreso con sus detalles.
+      const registroIngreso = await crearDato(`detallesingreso`, ingreso)
+      console.log(registroIngreso);
+
+      // Si la petición NO se realizó con exito...
+      if(registroIngreso.code != 201){
+        mostrarErrores(registroIngreso);
+        return;
+      }
+
       // Si la peticion se realizó con exito muestro una alerta informando y la alamaceno en una variable.
-      const alerta = await successAlert(respuesta.message);
-      // Si la alerta es confirmado. Es decir, se di "Ok" en ellas
+      const alerta = await successAlert(registroIngreso.message);
+      // Si la alerta es confirmado. Es decir, se di "Ok" en ella
       if(alerta.isConfirmed){
-        // Reseteo los campos del formulario y se dirige a la vista de lavadores
+        // Reseteo los campos del formulario y se dirige a la vista de inicio
         formRegistro.reset();
-        window.location.href = '#/lavadores';
+        window.location.href = '#/inicio';
       }
     } catch (error) {
       // Imprimo en la consola el error obtenido
@@ -182,4 +239,13 @@ async function cargarServicios(contendor){
   } catch (error) {
     console.log(error);
   }
+}
+
+// Funcion que me muestras los errores de una peticion recibiendo la peticion como parametro.
+async function mostrarErrores(peticion) {
+  let error = null; //Declaro variable error e inicializo en null para luego almacenar el error.
+  if(Array.isArray(peticion.errors)) error = peticion.errors[0]; //Si lo errores obtenidos de la peticion es un arreglo entonces almaceno en la variable error el primer error del arreglo.
+  else error = peticion.errors //Si no es un arreglo solo alamceno el error obtenido en la varaible.
+  // Por ultimo muestro el error en una alerta y retorno para no seguir.
+  await errorAlert(peticion.message, error);
 }

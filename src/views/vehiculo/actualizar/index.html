@@ -1,58 +1,56 @@
-  <main class="main">
-    <img class="main__logo main__logo--header" src="/src/images/Recurso 2.png" alt="">
-    <h1 class="main__title">Registro de vehiculo</h1>
-    <form class="form form--large" action="">
-      <div class="form__space">
-        <label class="form__label" for="placa">Placa:</label>
-        <input class="form__input" type="text" name="placa" placeholder="AAA00A">
-      </div>
-      <div class="form__space">
-        <label class="form__label" for="cedula:">Cedula Propietario:</label>
-        <input class="form__input" type="number" name="Cedula" placeholder="22222222">
-      </div>
-      <div class="form__space">
-        <label class="form__label" for="marca:">Marca:</label>
-        <input class="form__input" type="text" name="marca" placeholder="BMW">
-      </div>
-      <div class="form__space">
-        <label class="form__label" for="nombre">Nombre:</label>
-        <input class="form__input" type="text" name="nombre" placeholder="ej: Juan Perez">
-      </div>
-      <div class="form__space">
-        <label class="form__label" for="modelo">Modelo:</label>
-        <input class="form__input" type="number" name="modelo" placeholder="2025">
-      </div>
-      <div class="form__space">
-        <label class="form__label" for="telefono">Telefono:</label>
-        <input class="form__input" type="number" name="telefono" placeholder="123 456 7890">
-      </div>
-      <div class="form__space">
-        <label class="form__label" for="type">Servicio del vehiculo:</label>
-        <select class="form__select" name="type" id="">
-          <option>Seleccione un servicio</option>
-          <option value="1">Particular</option>
-          <option value="2">Plataforma</option>
-          <option value="3">Publico</option>
-        </select>
-      </div>
-      <div class="form__space">
-        <label class="form__label" for="clave">Clave (Opcional):</label>
-        <input class="form__input" type="text" name="clave" placeholder="****">
-      </div>
-      <div class="form__space">
-        <label class="form__label" for="type">Tipo de vehiculo:</label>
-        <select class="form__select" name="type" id="">
-          <option>Seleccione un tipo</option>
-          <option value="1">Moto</option>
-          <option value="2">Carro</option>
-          <option value="3">Camioneta</option>
-        </select>
-      </div>
+<main class="main">
+  <h1 class="main__title">Registro de vehiculo</h1>
+  <form class="form form--large" action="" id="form-Registro" novalidate>
+    <div class="form__space">
+      <label class="form__label" for="placa">Placa:</label>
+      <input class="form__input" type="text" name="placa" placeholder="AAA00A" required>
+    </div>
+    <div class="form__space">
+      <label class="form__label" for="cedula:">Cedula Propietario:</label>
+      <input class="form__input" type="text" name="cedula" placeholder="22222222" required>
+    </div>
+    <div class="form__space">
+      <label class="form__label" for="marca:">Marca:</label>
+      <input class="form__input" type="text" name="marca" placeholder="BMW" required>
+    </div>
+    <div class="form__space">
+      <label class="form__label" for="nombre">Nombre:</label>
+      <input class="form__input" type="text" name="nombre" placeholder="ej: Juan Perez" required>
+    </div>
+    <div class="form__space">
+      <label class="form__label" for="modelo">Modelo:</label>
+      <input class="form__input" type="text" name="modelo" placeholder="2025" required>
+    </div>
+    <div class="form__space">
+      <label class="form__label" for="telefono">Telefono:</label>
+      <input class="form__input" type="text" name="telefono" placeholder="123 456 7890" required>
+    </div>
+    <div class="form__space">
+      <label class="form__label" for="type">Tipo de vehiculo:</label>
+      <select class="form__select" name="typeVeh" required>
+        <option>Seleccione un tipo</option>
+        <!-- <option value="1">Moto</option>
+        <option value="2">Carro</option>
+        <option value="3">Camioneta</option> -->
+      </select>
+    </div>
+    <div class="form__space">
+      <label class="form__label" for="clave">Clave (Opcional):</label>
+      <input class="form__input" type="text" name="clave" placeholder="****">
+    </div>
+    <div class="form__space">
+      <label class="form__label" for="type">Servicio del vehiculo:</label>
+      <select class="form__select" name="typeSer" id="" required>
+        <option>Seleccione un servicio</option>
+        <!-- <option value="1">Particular</option>
+        <option value="2">Plataforma</option>
+        <option value="3">Publico</option> -->
+      </select>
+    </div>
 
-      <div class="form__space form__space--button">
-        <button class="form__button" type="submit">Guardar</button>
+    <div class="form__space form__space--button">
+      <button class="form__button" type="submit">Guardar</button>
+    </div>
 
-      </div>
-
-    </form>
-  </main>
+  </form>
+</main>

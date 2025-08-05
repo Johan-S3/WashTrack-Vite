@@ -4,6 +4,7 @@ import { inicioController } from '../views/inicio/inicioController.js'
 import { actualizarLavadorController } from '../views/lavadores/actualizar/actualizarLavadoController.js'
 import { crearLavadoresController } from '../views/lavadores/crear/crearLavadoresController.js'
 import { lavadoresController } from '../views/lavadores/listar/lavadoresController.js'
+import { crearLavadoController } from '../views/lavados/crear/crearLavadoController.js'
 import { actualizarTipoLavadoController } from '../views/tipolavados/actualizar/actualizarTipoLavadoController.js'
 import { crearTipoLavadoController } from '../views/tipolavados/crear/crearTipoLavadoController.js'
 import { tipoLavadosController } from '../views/tipolavados/listar/tipoLavadosController.js'
@@ -72,6 +73,18 @@ export const routes = {
     editar: {    
       path: `vehiculo/actualizar/index.html`,
       controlador: actualizarVehiculoControllador,
+      private: false
+    }
+  },
+  lavados:{
+    crear:{
+      path: `lavados/crear/index.html`,
+      controlador: crearLavadoController,
+      private: false
+    },
+    editar: {    
+      path: `lavados/crear/index.html`,
+      controlador: "No",
       private: false
     }
   },

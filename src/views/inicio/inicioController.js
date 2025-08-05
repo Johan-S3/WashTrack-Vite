@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
-import { infoAlert } from "../../helpers/alertas";
-import { obtenerDatos } from "../../helpers/peticiones";
+import { confirmAlert, infoAlert, successAlert } from "../../helpers/alertas";
+import { eliminarDato, obtenerDatos } from "../../helpers/peticiones";
 
 // Variable en el que se almacenará un valor booleano para indicar si se puede agregar un vehiculo para asignar un lavado.
 let canCreate = true;
@@ -15,6 +15,7 @@ export const inicioController = async (parametros = null) => {
   const tipoLavadosContent = document.getElementById("contenedor_tipo_lavados");
   const lavadoresContent = document.getElementById("contenedor_lavadores");
   const historialContent = document.getElementById("contenedor_historial");
+  const ingresosContent = document.getElementById("contenedor_ingresos");
   
   // Obtengo la referencia de los elementos botones donde me redirige al apartado donde se registra un vehiculo.
   const haederAgregar = document.getElementById("header-vehiculo");
@@ -23,6 +24,7 @@ export const inicioController = async (parametros = null) => {
   // Llamo las funciones donde se cargan las entidades enviando como argumento el elemento donde se deben cargar respectivamente.
   cargarTipoLavados(tipoLavadosContent);
   cargarLavadores(lavadoresContent);
+  cargarIngresos(ingresosContent);
 
   // Si la variable canCreate es contienen un valor falso...
   if (!canCreate) {
@@ -89,32 +91,32 @@ async function cargarTipoLavados(contendor){
 
 // Funcion para cargar los lavadores en el elemento correspondiente
 async function cargarLavadores(contendor){
-    try {
-        // Asigno en una variable la respuesta de la peticion de los lavadores
-        const lavadores = await obtenerDatos("lavadores");
-        // console.log(lavadores);
+  try {
+      // Asigno en una variable la respuesta de la peticion de los lavadores
+      const lavadores = await obtenerDatos("lavadores");
+      // console.log(lavadores);
 
-        // Si el codigo obtenido de la petición es 404 (Recurso no encontrado). Es decir, no hay lavadaores creados se le asigna a la variable canCreate el valor de false y se retorna.
-        if(lavadores.code == 404){
-            canCreate = false;
-            return
-        }
-        
-        // Le asigno a la variable canCreate true lo que indica que se puede registrar un vehiculo para asignar un lavado.
-        canCreate = true;
-        // Recorro los tipos de lavados obtenidos
-        lavadores.data.forEach(lavador => {
-        // Creo un nuevo elemento span le agrego una clase y le agrego contenido que es el nombre del tipo de lavado
-        const span = document.createElement('span');
-        span.classList.add("content__field");
-        span.textContent = lavador.nombre;
-        
-        // Por ultimo agrego el span al contendor de los lavadores. 
-        contendor.append(span);
-        })
-    } catch (error) {
-        console.log(error);
-    }
+      // Si el codigo obtenido de la petición es 404 (Recurso no encontrado). Es decir, no hay lavadaores creados se le asigna a la variable canCreate el valor de false y se retorna.
+      if(lavadores.code == 404){
+          canCreate = false;
+          return
+      }
+      
+      // Le asigno a la variable canCreate true lo que indica que se puede registrar un vehiculo para asignar un lavado.
+      canCreate = true;
+      // Recorro los tipos de lavados obtenidos
+      lavadores.data.forEach(lavador => {
+      // Creo un nuevo elemento span le agrego una clase y le agrego contenido que es el nombre del tipo de lavado
+      const span = document.createElement('span');
+      span.classList.add("content__field");
+      span.textContent = lavador.nombre;
+      
+      // Por ultimo agrego el span al contendor de los lavadores. 
+      contendor.append(span);
+      })
+  } catch (error) {
+      console.log(error);
+  }
 }
 
 async function buscarVehiculo() {
@@ -142,5 +144,94 @@ async function buscarVehiculo() {
     if (vehiculo.code == 200) window.location.href = `#/vehiculo/editar/placa=${placaBuscar.value}`;
     // Si el codigo de la peticion no es 200 entonces redirige a la pagina donde se crear un nuevo vehiculo.
     else window.location.href = `#/vehiculo/crear/placa=${placaBuscar.value}`;
+  }
+}
+
+async function cargarIngresos(contenedor) {
+  try {
+    // Asigno en una variable la respuesta de la peticion de los ingresos
+    const ingresos = await obtenerDatos(`detallesingreso/estado/registrado`);
+    console.log(ingresos);
+
+    // Recorro los ingresos obtenidos
+    for (const ingreso of ingresos.data) {
+    // Creo un nuevo elemento div le agrego sus clases y su atributo -> Card que contiene los detalles de cada ingreso
+    const card = document.createElement('div');
+    card.classList.add("panel__card", "card");
+    card.setAttribute("data-id", ingreso.id_registro)
+    
+    // Creo un nuevo elemento div y le agrego su clase -> Bloque que contiene el tipo de vehiculo y el boton para eliminar.
+    const infoVeh = document.createElement('div');
+    infoVeh.classList.add("card__information");
+    // Consulto el vehiculo por el id del vehiculo en el ingreso.
+    const vehiculoIng = await obtenerDatos(`vehiculos/id/${ingreso.id_vehiculo}`);
+    const tipoV = document.createElement('small');
+    tipoV.classList.add("card__vehicle");
+    const tipo = await obtenerDatos(`tiposvehiculos/${vehiculoIng.data.codigo_tipo_veh}`);
+    tipoV.textContent = tipo.data.nombre_tipo
+    const deleteIng = document.createElement('i');
+    deleteIng.classList.add("ri-delete-bin-6-fill", "card__icon");
+    deleteIng.setAttribute("data-id", ingreso.id_registro);
+    deleteIng.addEventListener("click", async () => {
+      const confirmacion = await confirmAlert("¿Está seguro de eliminar el ingreso?");
+      if (!confirmacion.isConfirmed) return;
+      const eliminado = await eliminarDato("detallesingreso", deleteIng.getAttribute("data-id"));
+      // Si la peticion se realizó con exito muestro una alerta informando.
+      if(eliminado.code == 200){
+        const cardEliminar = document.querySelector(`div[data-id="${deleteIng.getAttribute("data-id")}"]`)
+        cardEliminar.remove();
+        await successAlert(eliminado.message);
+      }
+    })
+    infoVeh.append(tipoV, deleteIng);
+    
+    // Creo un nuevo elemento strong le agrego su clase -> Bloque que contiene la placa del vehiculo
+    const placaIng = document.createElement('strong');
+    placaIng.classList.add("card__plate");
+    placaIng.textContent = vehiculoIng.data.placa;
+
+    // Creo un nuevo elemento div le agrego sus clases y su atributo -> Bloque que contiene las acciones de los ingresos
+    const accionesIng = document.createElement('div');
+    accionesIng.classList.add("card__space", "space");
+
+    const editarIng = document.createElement('a');
+    editarIng.classList.add("space__icon");
+    editarIng.setAttribute("href", `#/vehiculo/editar/placa=${vehiculoIng.data.placa}`);
+    const iconEdit = document.createElement('i');
+    iconEdit.classList.add("ri-edit-2-line");
+    editarIng.append(iconEdit);
+
+    const asignarLav = document.createElement('a');
+    asignarLav.classList.add("space__icon", "space__icon--scale");
+    asignarLav.setAttribute("href", `#/lavados/crear/id=${ingreso.id_registro}`);
+    const iconAsignar = document.createElement('i');
+    iconAsignar.classList.add("ri-car-washing-fill");
+    asignarLav.append(iconAsignar);
+
+    accionesIng.append(editarIng, asignarLav);
+
+    // Creo un nuevo elemento div le agrego su clase y su atributo -> Bloque que contiene la clave del vehiculo si tiene.
+    const infoClave = document.createElement('div');
+    infoClave.classList.add("card__washer");
+    const claveVeh = document.createElement('small');
+    if(vehiculoIng.data.clave == "" || vehiculoIng.data.clave == null) claveVeh.textContent = "Sin clave";
+    else claveVeh.textContent = vehiculoIng.data.clave;
+    const iconCandado = document.createElement('i');
+    iconCandado.classList.add("ri-lock-2-fill", "card__icon");
+
+    infoClave.append(claveVeh, iconCandado);
+
+    // console.log(vehiculoIng);
+
+    card.append(infoVeh, placaIng, accionesIng, infoClave);
+
+    contenedor.append(card);
+    
+    
+    // Por ultimo agrego el span al contendor de los lavadores. 
+    // contendor.append(span);
+  }
+  } catch (error) {
+      console.log(error);
   }
 }
