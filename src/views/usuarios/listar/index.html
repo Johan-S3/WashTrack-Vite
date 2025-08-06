@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+</head>
+<body>
+  <main class="contenedor_tabla contenedor_tabla--spaceOut">
+    <header class="header">
+    <div class="header__acces acces">
+      <a class="acces__icon" href="#/ingresos">
+        <i class="ri-money-dollar-circle-line"></i>
+      </a>
+    </div>
+    <div class="header__info">
+      <div>
+        <h3 class="header__nameUser">Nombre de usuario</h3>
+        <h6 class="header__nameRol">Rol</h6>
+      </div>
+      <i class="ri-account-circle-line header__icon"></i>
+      <a class="header__salir" href="#/login">Cerrar Sesión</a>
+    </div>
+  </header>
+    <div class="table__header">
+      <h1 class="table__title">Usuarios</h1>
+      <button class="table__button table__button--create">Agregar Usuario</button>
+    </div>
+    <table class="table">
+      <thead class="table__head">
+        <tr>
+          <th class="table__cell">Id</th>
+          <th class="table__cell">Cedula</th>
+          <th class="table__cell">Nombre</th>
+          <th class="table__cell">Correo</th>
+          <th class="table__cell">Telefono</th>
+          <th class="table__cell">Contraseña</th>
+          <th class="table__cell">Rol</th>
+          <th class="table__cell">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="table__body">
+        <!-- <tr class="table__row">
+          <td class="table__cell">101</td>
+          <td class="table__cell">Andres</td>
+          <td class="table__cell">3786814</td>
+          <td class="table__cell table__cell--separate">
+            <button class="table__button">
+              <i class="ri-edit-2-line"></i>
+            </button>
+            <button class="table__button table__button--delete">
+              <i class="ri-delete-bin-2-fill"></i>
+            </button>
+          </td>
+        </tr> -->
+      </tbody>
+    </table>
+  </main>
+</body>
+</html>

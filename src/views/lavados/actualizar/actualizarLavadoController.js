@@ -2,7 +2,7 @@ import { errorAlert, successAlert } from "../../../helpers/alertas";
 import { validarFormulario } from "../../../helpers/module";
 import { crearDato, editarDato, obtenerDatos } from "../../../helpers/peticiones";
 
-export const crearLavadoController = async (parametros = null) => {
+export const actualizarLavadoController = async (parametros = null) => {
   const { id } = parametros;
 
   // Obtengo la referencia del formulario por el ID
@@ -13,16 +13,30 @@ export const crearLavadoController = async (parametros = null) => {
   const tipoLavado = document.querySelector('select[name="type"]');
   const lavador = document.querySelector('select[name="lavador"]')
 
-  // Obtengo la informaicon del ingreso.
-  const ingreso = await obtenerDatos(`detallesingreso/id/${id}`)
-  // Destructuro la informacion del ingreso para obtener el id del vehiculo
-  const { id_vehiculo } = ingreso.data;
+  // Cargo los tipos de lavados y lavadores en sus select correspondientes.
+  cargarTipoLavados(tipoLavado);
+  cargarLavadores(lavador);
+  
+  // Obtengo la informacion del lavado.
+  const lavado = await obtenerDatos(`lavados/id/${id}`);
+  // console.log(lavado);
+  // Destructuro la informacion del lavado para obtener el data de la peticion
+  const { data } = lavado;
+
+  // Consulto el ingreso por el ID obtenido previamente.
+  const ingreso = await obtenerDatos(`detallesingreso/id/${data.id_registro}`)
+  // console.log(ingreso);
 
   // Consulto el vehiculo por el ID obtenido previamente.
-  const vehiculo = await obtenerDatos(`vehiculos/id/${id_vehiculo}`)
+  const vehiculo = await obtenerDatos(`vehiculos/id/${ingreso.data.id_vehiculo}`)
   // console.log(vehiculo);
+
   // Le asgino a la entrada de texto de la placa, la placa obtenida de la consulta.
   placa.value = vehiculo.data.placa
+
+  // Le asigno a los select su valor de acuerdo a los datos obtenidos en la consulta del lavado
+  tipoLavado.value = data.codigo_tipo_lavado;
+  lavador.value = data.codigo_lavador;
 
   // Pbtengo la información del usuario registrado en el localStorage
   const informacionUser = JSON.parse(localStorage.getItem("usuario"));
@@ -30,9 +44,6 @@ export const crearLavadoController = async (parametros = null) => {
   // Consulto un usuario por su cedula, esta obtenida del localStorage.
   const usuario = await obtenerDatos(`usuarios/${informacionUser.cedula}`)
 
-  // Cargo los tipos de lavados y lavadores en sus select correspondientes.
-  cargarTipoLavados(tipoLavado);
-  cargarLavadores(lavador);
 
   // Al formualrio le agrego el evento submit
   formRegistro.addEventListener("submit", async (e) => {
@@ -43,43 +54,27 @@ export const crearLavadoController = async (parametros = null) => {
 
     // Creo un objeto lavado con los valores agregados en el formulario.
     let lavado = {
-      id_registro: id,
+      id_registro: data.id_registro,
       id_usuario: usuario.data.id,
       codigo_tipo_lavado: tipoLavado.value,
       codigo_lavador: lavador.value,
     }
 
-    // Creo iun objeto estado que contiene la propiedad que indica el estado al que pasará el lavado.
-    let estado = {
-      estado: "lavando"
-    }
-
     // Try..catch para poder ver el error.
     try {
       // En una variable almaceno la respuesta de hacer fetch a la ruta que crea el lavado.
-      const lavadoCreado = await crearDato(`lavados`, lavado);
-      // console.log(lavadoCreado);
+      const lavadoActualizado = await editarDato(`lavados`,id, lavado);
+      // console.log(lavadoActualizado);
 
       // Si el codigo de la peticion no es 201. Es decir no se creó el dato entonces llamo la funcion que muestra los errores enviando la respuesta de la peticion.
       // Y retorno para no seguir ejecutando el codigo.
-      if (lavadoCreado.code != 201) {
-        mostrarErrores(lavadoCreado);
-        return;
-      }
-
-      // En una variable almaceno la respuesta de hacer fetch a la ruta que actualiza el estado del ingreso.
-      const estadoActualizado = await editarDato(`detallesingreso/estado`, id, estado);
-      // console.log(estadoActualizado);
-
-      // Si el codigo de la peticion no es 200. Es decir no se actualizó el dato entonces llamo la funcion que muestra los errores enviando la respuesta de la peticion.
-      // Y retorno para no seguir ejecutando el codigo.
-      if (estadoActualizado.code != 200) {
-        mostrarErrores(estadoActualizado);
+      if (lavadoActualizado.code != 200) {
+        mostrarErrores(lavadoActualizado);
         return;
       }
 
       // Si todas las peticiones se realizaron con exito muestro una alerta informando y la alamaceno en una variable.
-      const alerta = await successAlert(lavadoCreado.message);
+      const alerta = await successAlert(lavadoActualizado.message);
       // Si la alerta es confirmado. Es decir, se di "Ok" en ella
       if (alerta.isConfirmed) {
         // Reseteo los campos del formulario y se dirige a la vista de inicio

@@ -66,6 +66,7 @@
 .form__space--selfRow{
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 15px;
 }
 .form__space--button{
@@ -143,7 +144,10 @@
   color: var(--colorTerciario);
 }
 
-
+.resalt{
+  color: var(--colorPrincipal);
+  font-weight: bold;
+}
 
 
 /* Media Queries */

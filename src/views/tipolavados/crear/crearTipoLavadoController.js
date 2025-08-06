@@ -21,7 +21,7 @@ export const crearTipoLavadoController = async (parametros = null) => {
 
   // Agrego eventos que maneja la validación de caracteres ingresados en los campos.
   nombre.addEventListener("keypress", (e) => limitar(e, 25)); 
-  valor.addEventListener("keypress", (e) => limitar(e, 8)); 
+  valor.addEventListener("keypress", (e) => limitar(e, 7)); 
   duracion.addEventListener("keypress", (e) => limitar(e, 3)); 
 
   // Declaro y defino un arreglo con los campos del formulario.

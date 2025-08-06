@@ -17,6 +17,9 @@
   overflow-y: auto;
   gap: 5%;
 }
+.contenedor_tabla--spaceOut{
+  padding: 0;
+}
 
 .table, .table__header{
   width: 100%;

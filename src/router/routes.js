@@ -1,15 +1,21 @@
 import { loginController } from '../views/auth/login/loginController.js'
-import { registroController } from '../views/auth/register/registroController.js'
+import { ingresosController } from '../views/ingresos/ingresosController.js'
 import { inicioController } from '../views/inicio/inicioController.js'
 import { actualizarLavadorController } from '../views/lavadores/actualizar/actualizarLavadoController.js'
 import { crearLavadoresController } from '../views/lavadores/crear/crearLavadoresController.js'
 import { lavadoresController } from '../views/lavadores/listar/lavadoresController.js'
+import { actualizarLavadoController } from '../views/lavados/actualizar/actualizarLavadoController.js'
 import { crearLavadoController } from '../views/lavados/crear/crearLavadoController.js'
+import { pagoController } from '../views/pago/pagoController.js'
 import { actualizarTipoLavadoController } from '../views/tipolavados/actualizar/actualizarTipoLavadoController.js'
 import { crearTipoLavadoController } from '../views/tipolavados/crear/crearTipoLavadoController.js'
 import { tipoLavadosController } from '../views/tipolavados/listar/tipoLavadosController.js'
-import { actualizarVehiculoControllador } from '../views/vehiculo/actualizar/actualizarVehiculoController.js'
-import { crearVehiculoControllador } from '../views/vehiculo/crear/crearVehiculoController.js'
+import { actualizarUsuariosController } from '../views/usuarios/actualizar/actualizarUsuariosController.js'
+import { crearUsuariosController } from '../views/usuarios/crear/crearUsuariosController.js'
+import { usuariosController } from '../views/usuarios/listar/usuariosController.js'
+import { actualizarVehiculoController } from '../views/vehiculo/actualizar/actualizarVehiculoController.js'
+import { registrarVehiculoExistenteController } from '../views/vehiculo/actualizar/registrarVehiculoExistenteController.js'
+import { crearVehiculoController } from '../views/vehiculo/crear/crearVehiculoController.js'
 
 
 export const routes = {
@@ -19,17 +25,34 @@ export const routes = {
     controlador: loginController,
     private: false
   },
-  register:{    
-    path: "auth/register/index.html",
-    controlador: registroController,
-    private: false
-  },
   inicio:{    
     path: "inicio/index.html",
     controlador: inicioController,
     private: false
   },
+  ingresos:{    
+    path: "ingresos/index.html",
+    controlador: ingresosController,
+    private: false
+  },
   // Grupo de rutas
+  usuarios:{    
+    "/":{
+      path: `usuarios/listar/index.html`,
+      controlador: usuariosController,
+      private: false
+    },
+    crear: {    
+      path: `usuarios/crear/index.html`,
+      controlador: crearUsuariosController,
+      private: false
+    },
+    editar: {
+      path: `usuarios/actualizar/index.html`,
+      controlador: actualizarUsuariosController,
+      private: false
+    }
+  },
   lavadores:{    
     "/":{
       path: `lavadores/listar/index.html`,
@@ -67,12 +90,17 @@ export const routes = {
   vehiculo:{    
     crear: {    
       path: `vehiculo/crear/index.html`,
-      controlador: crearVehiculoControllador,
+      controlador: crearVehiculoController,
+      private: false
+    },
+    registrar: {    
+      path: `vehiculo/actualizar/index.html`,
+      controlador: registrarVehiculoExistenteController,
       private: false
     },
     editar: {    
       path: `vehiculo/actualizar/index.html`,
-      controlador: actualizarVehiculoControllador,
+      controlador: actualizarVehiculoController,
       private: false
     }
   },
@@ -83,19 +111,16 @@ export const routes = {
       private: false
     },
     editar: {    
-      path: `lavados/crear/index.html`,
-      controlador: "No",
+      path: `lavados/actualizar/index.html`,
+      controlador: actualizarLavadoController,
       private: false
     }
   },
   pago:{    
-    path: "pago/index.html",
-    controlador: "No",
-    private: false
-  },
-  asignarLavado:{    
-    path: "asignarLavado/index.html",
-    controlador: "No",
-    private: false
-  },
+    crear: {
+      path: "pago/index.html",
+      controlador: pagoController,
+      private: false
+    }
+  }
 }

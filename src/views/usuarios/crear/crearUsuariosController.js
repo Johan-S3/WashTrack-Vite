@@ -5,7 +5,7 @@ import { limitar, outFocus, validarCaracteres, validarCorreo, validarFormulario,
 import { crearDato, obtenerDatos } from "../../../helpers/peticiones.js";
 
 
-export const registroController = async (parametros = null) => {
+export const crearUsuariosController = async (parametros = null) => {
   /* ------------------ VARIABLES ------------------  */
   
   // Obtengo la referencia del formulario por el ID
@@ -101,7 +101,7 @@ export const registroController = async (parametros = null) => {
       if(alerta.isConfirmed){
         // Reseteo los campos del formulario y se dirige a la vista de login
         formRegistro.reset();
-        window.location.href = '#/login';
+        window.location.href = '#/usuarios';
       }
     } catch (error) {
       // Imprimo en la consola el error obtenido

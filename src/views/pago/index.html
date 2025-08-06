@@ -10,29 +10,35 @@
 
 <body>
   <main class="main">
-    <img class="main__logo main__logo--header" src="Imagenes/Recurso 2.png" alt="">
+    <img class="main__logo main__logo--header" src="/src/images/Recurso 2.png" alt="">
     <h1 class="main__title">Pago del servicio</h1>
-    <form class="form form--little" action="">
+    <form class="form" action="" id="form-Registro" novalidate>
       <div class="form__space form__space--selfRow">
-        <label class="form__label" for="placa">Placa:</label>
-        <input class="form__input" type="text" name="placa" value="HLH02H" disabled>
+        <label class="form__label" for="valor">Valor:</label>
+        <input class="form__input" type="text" name="valor" disabled required>
       </div>
       <div class="form__space form__space--selfRow">
-        <label class="form__label" for="total">Total:</label>
-        <input class="form__input" type="number" name="total" value="75.000" disabled>
+        <label class="form__label" for="placa">Placa:</label>
+        <input class="form__input" type="text" name="placa" disabled required>
+      </div>
+      <div class="form__space form__space--selfRow">
+        <label class="form__label" for="descuento">Descuento:</label>
+        <input class="form__input" type="text" name="descuento"  disabled required>
       </div>
       <div class="form__space form__space--selfRow ">
         <label class="form__label" for="recibido">Dinero recibido:</label>
-        <input class="form__input" type="number" name="recibido">
+        <input class="form__input" type="text" name="recibido" required>
       </div>
       <div class="form__space form__space--selfRow">
-        <label class="form__label" for="recibido">Cambio:</label>
-        <input class="form__input" type="number" name="recibido" disabled>
+        <label class="form__label" for="total">Total:</label>
+        <input class="form__input resalt" type="text" name="total"  readonly required>
+      </div>
+      <div class="form__space form__space--selfRow">
+        <label class="form__label" for="cambio">Cambio:</label>
+        <input class="form__input" type="text" name="cambio" disabled>
       </div>
       <div class="form__space form__space--button">
-        <button class="form__button" type="submit">
-          <a class="form__acces" href="inicio.html">Confirmar</a>
-        </button>
+        <button class="form__button" type="submit">Confirmar</button>
       </div>
     </form>
   </main>

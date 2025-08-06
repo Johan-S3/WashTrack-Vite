@@ -6,7 +6,7 @@ import { crearDato, editarDato, obtenerDatos } from "../../../helpers/peticiones
 let existePiloto = false;
 let idPiloto = 0;
 
-export const crearVehiculoControllador = async (parametros = null) => {
+export const crearVehiculoController = async (parametros = null) => {
 
   // Obtengo la placa del parametro recibido.
   const { placa } = parametros;

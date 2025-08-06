@@ -6,12 +6,9 @@ import { crearDato, editarDato, obtenerDatos } from "../../../helpers/peticiones
 let existePiloto = false;
 let idPiloto = 0;
 
-// Variable global en el que se almacenará un valor para indicar si el ingreso existe en la base de datos. Pero se inicializa en null
-let ingresoExiste = null;
-
-export const actualizarVehiculoController = async (parametros = null) => {
+export const registrarVehiculoExistenteController = async (parametros = null) => {
   // Obtengo la placa del parametro recibido.
-  const { id } = parametros;
+  const { placa } = parametros;
 
   // Obtengo la referencia del formulario por el ID
   const formRegistro = document.getElementById("form-Registro");
@@ -32,30 +29,19 @@ export const actualizarVehiculoController = async (parametros = null) => {
   await cargarTipoVehiculos(tipoVeh);
   await cargarServicios(servicioVeh);
 
-  // Asigno a una varaible la respuesta de la peticion para obtener un detalle ingreso por su id.
-  const ingresoPeticion = await obtenerDatos(`detallesingreso/id/${id}`);
-  const { data } = ingresoPeticion; //Destructura la respuesta de la peticion para acceder solo a la data.
+  // Asigno a una varaible la respuesta de la peticion pra obtener un vehiculo por su placa.
+  const vehiculo = await obtenerDatos(`vehiculos/placa/${placa}`);
+  console.log(vehiculo);
 
-  // Asigno a una varaible la respuesta de la peticion para obtener un vehiculo por su id.
-  const vehiculoPeticion = await obtenerDatos(`vehiculos/id/${data.id_vehiculo}`);
-
-  // Asigno a una varaible la respuesta de la peticion para obtener un piloto o propietario por su id.
-  const propietarioPeticion = await obtenerDatos(`propietariosvehiculos/id/${data.id_duenio_vehiculo}`);
+  const { data } = vehiculo;
 
   // Le asigno el valor a los campos del vehiculo obtenidos de la petición. 
-  placaVeh.value = vehiculoPeticion.data.placa;
-  marca.value = vehiculoPeticion.data.marca_vehiculo;
-  modelo.value = vehiculoPeticion.data.modelo_vehiculo;
-  clave.value = vehiculoPeticion.data.clave;
-  tipoVeh.value = vehiculoPeticion.data.codigo_tipo_veh;
+  placaVeh.value = data.placa;
+  marca.value = data.marca_vehiculo;
+  modelo.value = data.modelo_vehiculo;
+  clave.value = data.clave;
+  tipoVeh.value = data.codigo_tipo_veh;
 
-  // Le asigno el valor a los campos del propietario obtenidos de la petición. 
-  cedula.value = propietarioPeticion.data.cedula;
-  nombre.value = propietarioPeticion.data.nombre;
-  telefono.value = propietarioPeticion.data.telefono;
-
-  // Le asigno el valor a del tipo de servicio obtenido de la peticion de consulta del ingreso. 
-  servicioVeh.value = data.codigo_servicio;
 
   // Deshabilito la entrada de texto de la placa.
   placaVeh.disabled = true;
@@ -63,8 +49,33 @@ export const actualizarVehiculoController = async (parametros = null) => {
   // Le pongo el foco a la cedula para cuando se dejen los datos intactos al dar al boton se ejecute el vento de salir del foco de la cedula para consultar el pioloto con esa cedula.
   cedula.focus();
 
-
+  
   /* ------------------ EVENTOS ------------------  */
+
+  // Agrego evento para que al perder el enfoque el camnpo de la cedula realice una consulta.
+  cedula.addEventListener("blur", async () => {
+    // En una variable almaceno la respuesta de hacer fetch a la ruta que me consulta si el piloto ingresado ya existe con ese número de cedula...
+    const pilotoRes = await obtenerDatos(`propietariosvehiculos/cedula/${cedula.value}`);
+
+    // Si el codigo de la peticion es 200. Es decir, existo... Piloto encontrado, entonces...
+    if (pilotoRes.code == 200) {
+      // La data de la peticion la destructuro.
+      const { data } = pilotoRes;
+
+      // Le asigno a los campos nombre y telefono los datos obtenidos de la peticion.
+      nombre.value = data.nombre;
+      telefono.value = data.telefono;
+
+      // Le asigno a la variable existePiloto el valor de true, que indica que el piloto si existe en la base de datos con ese numero de cedula. Y a la variable idPiloto el id del propietario existente obtenido.
+      existePiloto = true;
+      idPiloto = data.id
+    } else {
+      // Si el codigo de la peticion no es 200. Es decir que no exite. Entonces, le asigno a las entradas de texto nombre y telefono un valor vacio.
+      nombre.value = "";
+      telefono.value = "";
+    }
+    // console.log(pilotoRes); 
+  })
 
   // Agrego eventos para permitir solo la entradas de numeros, letras y caracteres a los campos correspondientemente.
   marca.addEventListener('keydown', validarLetras);
@@ -91,31 +102,6 @@ export const actualizarVehiculoController = async (parametros = null) => {
     campo.addEventListener("blur", outFocus);
   });
 
-  // Agrego evento para que al perder el enfoque el campo de la cedula realice una consulta.
-  cedula.addEventListener("blur", async () => {
-    // En una variable almaceno la respuesta de hacer fetch a la ruta que me consulta si el piloto ingresado ya existe con ese número de cedula...
-    const pilotoRes = await obtenerDatos(`propietariosvehiculos/cedula/${cedula.value.trim()}`);
-
-    // Si el codigo de la peticion es 200. Es decir, existe... Piloto encontrado, entonces...
-    if (pilotoRes.code == 200) {
-      // La data de la peticion la destructuro.
-      const { data } = pilotoRes;
-
-      // Le asigno a los campos nombre y telefono los datos obtenidos de la peticion.
-      nombre.value = data.nombre;
-      telefono.value = data.telefono;
-
-      // Le asigno a la variable existePiloto el valor de true, que indica que el piloto si existe en la base de datos con ese numero de cedula. Y a la variable idPiloto el id del propietario existente obtenido.
-      existePiloto = true;
-      idPiloto = data.id
-    } else {
-      // Si el codigo de la peticion no es 200. Es decir que no exite. Entonces, le asigno a las entradas de texto nombre y telefono un valor vacio.
-      nombre.value = "";
-      telefono.value = "";
-    }
-    // console.log(pilotoRes); 
-  })
-
   // Al formualrio le agrego el evento submit
   formRegistro.addEventListener("submit", async (e) => {
     e.preventDefault(); //Se previene el envio del formulario.
@@ -141,19 +127,15 @@ export const actualizarVehiculoController = async (parametros = null) => {
 
     // Creo un objeto ingreso con su atributo de codigo de servicio. Los demas atributos se agregarán de acuerdo al resultado de las peticiones siguientes.
     let ingreso = {
-      id_vehiculo: vehiculoPeticion.data.id,
       codigo_servicio: servicioVeh.value,
       estado: "registrado"
     };
 
     // Try..catch para poder ver el error.
     try {
-      // console.log(idPiloto);
-      // return
-
       // En una variable almaceno la respuesta de hacer fetch a la ruta que actualiza el vehiculo.
-      const vehiculoActualizado = await editarDato(`vehiculos`, vehiculoPeticion.data.id, vehiculo);
-      // console.log(vehiculoActualizado);
+      const vehiculoActualizado = await editarDato(`vehiculos`, data.id, vehiculo);
+      console.log(vehiculoActualizado);
 
       // Si el codigo de la peticion no es 200. Es decir no se actualizó el dato entonces llamo la funcion que muestra los errores enviando la respuesta de la peticion.
       // Y retorno para no seguir ejecutando el codigo.
@@ -161,6 +143,8 @@ export const actualizarVehiculoController = async (parametros = null) => {
         mostrarErrores(vehiculoActualizado);
         return;
       }
+      // Agrego al objeto ingreso un nuevo atributo co9n su valor.
+      ingreso.id_vehiculo = data.id;
 
       // Si existePiloto es true. Es decir, la cedula que se ingreso en el campo cedula ya existe entonces...
       if (existePiloto) {
@@ -180,7 +164,7 @@ export const actualizarVehiculoController = async (parametros = null) => {
       } else {
         // En una variable almaceno la respuesta de hacer fetch a la ruta que crea el propietario, piloto o dueño del vehiculo.
         const pilotoCreado = await crearDato(`propietariosvehiculos`, piloto);
-        console.log(pilotoCreado);
+        // console.log(pilotoCreado);
 
         // Si el codigo de la peticion no es 201. Es decir no se creó el dato entonces llamo la funcion que muestra los errores enviando la respuesta de la peticion.
         // Y retorno para no seguir ejecutando el codigo.
@@ -193,12 +177,12 @@ export const actualizarVehiculoController = async (parametros = null) => {
         ingreso.id_duenio_vehiculo = pilotoCreado.data.id;
       }
 
-      // En una variable almaceno la respuesta de hacer fetch a la ruta que edita el ingreso con sus detalles.
-      const registroIngreso = await editarDato(`detallesingreso`, id, ingreso)
+      // En una variable almaceno la respuesta de hacer fetch a la ruta que crea el ingreso con sus detalles.
+      const registroIngreso = await crearDato(`detallesingreso`, ingreso)
       console.log(registroIngreso);
 
       // Si la petición NO se realizó con exito...
-      if (registroIngreso.code != 200) {
+      if (registroIngreso.code != 201) {
         mostrarErrores(registroIngreso);
         return;
       }

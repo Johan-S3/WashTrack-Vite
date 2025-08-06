@@ -7,16 +7,30 @@ import { crearDato } from "../../../helpers/peticiones.js";
 export const loginController = async (parametros = null) => {
   // Limpio el localStorage
   localStorage.clear();
-  
+
+  // Verificamos si estamos en la vista del login
+  if (location.hash === "#/login") {
+    // Agregamos un estado al historial para evitar retroceso
+    history.pushState(null, null, location.href);
+
+    // Escuchamos el evento de retroceso (popstate)
+    window.addEventListener("popstate", function (event) {
+      // Si sigue en login, empujamos el estado otra vez para bloquear el retroceso
+      if (location.hash === "#/login") {
+        history.pushState(null, null, location.href);
+      }
+    });
+  }
+
   /* ------------------ VARIABLES ------------------  */
-  
+
   // Obtengo la referencia del formulario por el ID
   const formLogin = document.getElementById("form-Login");
-  
+
   // Obtengo la referencia de las entradas de texto y de seleccion del formulario por su name
   const cedula = formLogin.querySelector('input[name="documento"]');
   const contrasena = formLogin.querySelector('input[name="contrasenia"]');
-  
+
   /* ------------------ EVENTOS ------------------  */
 
   // Agrego eventos para permitir solo la entradas de numeros, letras y caracteres a los campos correspondientemente.
@@ -24,8 +38,8 @@ export const loginController = async (parametros = null) => {
   contrasena.addEventListener('keydown', validarCaracteres);
 
   // Agrego eventos que maneja la validación de caracteres ingresados en los campos.
-  cedula.addEventListener("keypress", (e) => limitar(e, 10)); 
-  contrasena.addEventListener("keypress", (e) => limitar(e, 50)); 
+  cedula.addEventListener("keypress", (e) => limitar(e, 10));
+  contrasena.addEventListener("keypress", (e) => limitar(e, 50));
 
   // Declaro y defino un arreglo con los campos del formulario.
   const campos = [cedula, contrasena];
@@ -41,12 +55,12 @@ export const loginController = async (parametros = null) => {
 
     // Si el metodo validar formualrio retorna falso entonces retorna y no se hace nada.
     if (!validarFormulario(e)) return;
-    
+
     // Creo un objeto con los valores agregados en el formualrio.
     const usuario = {
-        cedula: cedula.value,
-        contrasena: contrasena.value,
-    }  
+      cedula: cedula.value,
+      contrasena: contrasena.value,
+    }
 
     // Try..catch para poder ver el error.
     try {
@@ -54,28 +68,33 @@ export const loginController = async (parametros = null) => {
       const respuesta = await crearDato("usuarios/login", usuario);
 
       // Si la petición NO se realizó con exito...
-      if(!respuesta.success){
+      if (!respuesta.success) {
         let error = null; //Declaro variable error e inicializo en null para luego almacenar el error.
-        if(Array.isArray(respuesta.errors)) error = respuesta.errors[0]; //Si lo errores obtenidos de la peticion es un arreglo entonces almaceno en la variable error el primer error del arreglo.
+        if (Array.isArray(respuesta.errors)) error = respuesta.errors[0]; //Si lo errores obtenidos de la peticion es un arreglo entonces almaceno en la variable error el primer error del arreglo.
         else error = respuesta.errors //Si no es un arreglo solo alamceno el error obtenido en la varaible.
 
         // Por ultimo muestro el error en una alerta y retorno para no seguir.
         await errorAlert(respuesta.message, error);
         return
       }
-      
+
       // Destructuro el objeto de los datos obtenido en la respuesta.
-      let {data} = respuesta;
-      
+      let { data } = respuesta;
+
+
       // Guardo los datos en el localStorage
       localStorage.setItem("usuario", JSON.stringify(data));
 
       // Si la peticion se realizó con exito muestro una alerta informando y la alamaceno en una variable.
       const alerta = await successAlert(`Bienvenido ${data.nombre}`, respuesta.message);
       // Si la alerta es confirmado. Es decir, se di "Ok" en ellas
-      if(alerta.isConfirmed){
+      if (alerta.isConfirmed) {
         // Reseteo los campos del formulario y se dirige a la vista de login
         formLogin.reset();
+        if (data.codigo_rol == 1) {
+          window.location.href = '#/usuarios';
+          return
+        }
         window.location.href = '#/inicio';
       }
     } catch (error) {

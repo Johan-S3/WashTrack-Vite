@@ -12,6 +12,7 @@
     "vite": "^7.0.3"
   },
   "dependencies": {
+    "jspdf": "^3.0.1",
     "sweetalert2": "^11.22.2"
   }
 }
