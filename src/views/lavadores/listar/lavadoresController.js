@@ -122,16 +122,6 @@ async function cargarLavadores(contendor){
 
 // Funcion para borrar de la base de datos el id y para eliminar la tupla en la tabla.
 async function eliminarLavador(id) {
-    // Se realiza la peticion para obtener lavados por el id o codigo del lavador.
-    const lavadoExist = await obtenerDatos(`lavados/lavador/${id}`);
-
-    // Si el codigo de respuesta de la peticion es 200. Es decir, existe un lavado con ese lavador relacionado.
-    if(lavadoExist.code == 200){
-        // Muestro mensaje de error ya que no se puede eliminar ese lavador y retorno.
-        errorAlert("¡Ups! No se puede eliminar el lavador", "Este lavador ya pertenece a un lavado");
-        return;
-    }
-
     // Se realiza la peticion para eliminar el lavador por el id.
     const peticion = await eliminarDato("lavadores", id);
     // Si el codigo de la respuesta el 200. Es decir, el lavador ya se eliminó de la base de datos...
@@ -141,6 +131,8 @@ async function eliminarLavador(id) {
         fila.remove();
         // Por ultimo muestro una alerta de exito indicando que el lavador se eliminó.
         successAlert("Lavador eliminado correctamente");
+    }else{
+        errorAlert(`¡Ups! ${peticion.message}` , peticion.errors);
     }
 }
 

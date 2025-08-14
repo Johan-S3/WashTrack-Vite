@@ -139,7 +139,8 @@ async function cargarHistorial(contendor) {
       const {id_lavado} = factura;
 
       // Consulto el lavado por el id obtenido.
-      const lavado = await obtenerDatos(`lavados/id/${id_lavado}`)
+      const lavado = await obtenerDatos(`lavados/id/${id_lavado}`);
+      // console.log(lavado);
 
       // Accedo al id del rgistro del lavado obtenido.
       const {id_registro} = lavado.data;
@@ -148,15 +149,20 @@ async function cargarHistorial(contendor) {
       
       // Accedo al id del vehiculo del ingreso obtenido.
       const {id_vehiculo} = ingreso.data;
-      const vehiculo = await obtenerDatos(`vehiculos/id/${id_registro}`) //Consulto el vehiculo con el id del vehiculo
-      console.log(vehiculo);
+      const vehiculo = await obtenerDatos(`vehiculos/id/${id_vehiculo}`) //Consulto el vehiculo con el id del vehiculo
+      // console.log(vehiculo);
       
       const {placa} = vehiculo.data; //Obtengo la palca del id obtenido.
 
+      // if(placa == null || placa == undefined) return;
+
+      // Creo selector span y le doy las clases correspondientes.
       const span = document.createElement("span");
       span.classList.add("content__field", "content__field--centerCeleste");
-      span.textContent = `Placa - ${placa}`
+      // Agrego la placa obtenida en el contenido del span.
+      span.textContent = `Placa - ${placa}` 
 
+      // Agrego el span al contenedor obtenido en la función como parametro.
       contendor.append(span)
     })
   } catch (error) {
@@ -212,12 +218,10 @@ async function cargarIngresos(contenedor) {
       // Creo un nuevo elemento div y le agrego su clase -> Bloque que contiene el tipo de vehiculo y el boton para eliminar.
       const infoVeh = document.createElement('div');
       infoVeh.classList.add("card__information");
-      // Consulto el vehiculo por el id del vehiculo en el ingreso.
-      const vehiculoIng = await obtenerDatos(`vehiculos/id/${ingreso.id_vehiculo}`);
       const tipoL = document.createElement('small');
       tipoL.classList.add("card__vehicle");
-      const tipo = await obtenerDatos(`tiposvehiculos/${vehiculoIng.data.codigo_tipo_veh}`);
-      tipoL.textContent = tipo.data.nombre_tipo
+      tipoL.textContent = ingreso.nombre_tipo;
+
       const deleteIng = document.createElement('i');
       deleteIng.classList.add("ri-delete-bin-6-fill", "card__icon");
       deleteIng.setAttribute("data-id", ingreso.id_registro);
@@ -232,17 +236,19 @@ async function cargarIngresos(contenedor) {
           await successAlert(eliminado.message);
         }
       })
+      
       infoVeh.append(tipoL, deleteIng);
 
       // Creo un nuevo elemento strong le agrego su clase -> Bloque que contiene la placa del vehiculo
       const placaIng = document.createElement('strong');
       placaIng.classList.add("card__plate");
-      placaIng.textContent = vehiculoIng.data.placa;
+      placaIng.textContent = ingreso.placa;
 
       // Creo un nuevo elemento div le agrego sus clases y su atributo -> Bloque que contiene las acciones de los ingresos
       const accionesIng = document.createElement('div');
       accionesIng.classList.add("card__space", "space");
 
+      // Creo un nuevo elemento a que será el encargado de redirigir al formulario donde se edita
       const editarIng = document.createElement('a');
       editarIng.classList.add("space__icon");
       editarIng.setAttribute("href", `#/vehiculo/editar/id=${ingreso.id_registro}`);
@@ -250,6 +256,7 @@ async function cargarIngresos(contenedor) {
       iconEdit.classList.add("ri-edit-2-line");
       editarIng.append(iconEdit);
 
+      // Creo un nuevo elemento a que será el encargado de redirigir al formulario donde se asigna lavado
       const asignarLav = document.createElement('a');
       asignarLav.classList.add("space__icon", "space__icon--scale");
       asignarLav.setAttribute("href", `#/lavados/crear/id=${ingreso.id_registro}`);
@@ -263,8 +270,8 @@ async function cargarIngresos(contenedor) {
       const infoLavador = document.createElement('div');
       infoLavador.classList.add("card__washer");
       const lavadorVeh = document.createElement('small');
-      if (vehiculoIng.data.clave == "" || vehiculoIng.data.clave == null) lavadorVeh.textContent = "Sin clave";
-      else lavadorVeh.textContent = vehiculoIng.data.clave;
+      if (ingreso.clave == "" || ingreso.clave == null) lavadorVeh.textContent = "Sin clave";
+      else lavadorVeh.textContent = ingreso.clave;
       const iconLavador = document.createElement('i');
       iconLavador.classList.add("ri-lock-2-fill", "card__icon");
 
@@ -274,11 +281,10 @@ async function cargarIngresos(contenedor) {
 
       card.append(infoVeh, placaIng, accionesIng, infoLavador);
 
+      // Por ultimo agrego la card al contendor de los ingresos. 
       contenedor.append(card);
 
 
-      // Por ultimo agrego el span al contendor de los lavadores. 
-      // contendor.append(span);
     }
   } catch (error) {
     console.log(error);
@@ -290,7 +296,7 @@ async function cargarLavados(contenedor) {
   try {
     // Asigno en una variable la respuesta de la peticion de los ingresos
     const ingresos = await obtenerDatos(`detallesingreso/estado/lavando`);
-    // console.log(ingresos);
+    // console.log(ingresos); return
 
     if (ingresos.code == 404) return;
 
@@ -306,20 +312,20 @@ async function cargarLavados(contenedor) {
       infoVeh.classList.add("card__information");
       // Consulto el lavado por el id del ingreso.
       const lavadoIng = await obtenerDatos(`lavados/ingreso/${ingreso.id_registro}`);
-      // console.log(lavadoIng);
+      // console.log(lavadoIng); 
       const tipoL = document.createElement('small');
       tipoL.classList.add("card__vehicle");
-      const tipoLavado = await obtenerDatos(`tipolavados/${lavadoIng.data.codigo_tipo_lavado}`);
-      // console.log(tipoLavado); 
-      tipoL.textContent = tipoLavado.data.nombre;
+      tipoL.textContent = lavadoIng.data.nombre_tipo_lavado;
+
+      // Creo un nuevo elemento "i" icono que será el encargado de ejecutar la opcion de eliminar un lavado
       const deleteIng = document.createElement('i');
       deleteIng.classList.add("ri-delete-bin-6-fill", "card__icon");
       deleteIng.setAttribute("data-id", ingreso.id_registro);
       deleteIng.addEventListener("click", async () => {
         const confirmacion = await confirmAlert("¿Está seguro de eliminar el lavado?");
         if (!confirmacion.isConfirmed) return;
-        const lavado = await obtenerDatos(`lavados/ingreso/${ingreso.id_registro}`);
-        const lavadoEliminado = await eliminarDato("lavados", lavado.data.id_lavado);
+        // Se realiza la peticion donde se elimina el lavado enviando el id del mimso como argumento.
+        const lavadoEliminado = await eliminarDato("lavados", lavadoIng.data.id_lavado);
         // Si la peticion se realizó con exito muestro una alerta informando.
         if (lavadoEliminado.code == 200) {
           await successAlert(lavadoEliminado.message);
@@ -332,14 +338,13 @@ async function cargarLavados(contenedor) {
           cardEliminar.remove();
         }
       })
+
       infoVeh.append(tipoL, deleteIng);
 
       // Creo un nuevo elemento strong le agrego su clase -> Bloque que contiene la placa del vehiculo
       const placaIng = document.createElement('strong');
       placaIng.classList.add("card__plate");
-      // Consulto el vehiculo por el id del vehiculo en el ingreso.
-      const vehiculoIng = await obtenerDatos(`vehiculos/id/${ingreso.id_vehiculo}`);
-      placaIng.textContent = vehiculoIng.data.placa;
+      placaIng.textContent = ingreso.placa;
 
       // Creo un nuevo elemento div le agrego sus clases y su atributo -> Bloque que contiene las acciones de los ingresos
       const accionesIng = document.createElement('div');
@@ -365,9 +370,7 @@ async function cargarLavados(contenedor) {
       const infoLavador = document.createElement('div');
       infoLavador.classList.add("card__washer");
       const lavadorVeh = document.createElement('small');
-      const lavado = await obtenerDatos(`lavados/ingreso/${ingreso.id_registro}`);
-      const lavador = await obtenerDatos(`lavadores/${lavado.data.codigo_lavador}`);
-      lavadorVeh.textContent = lavador.data.nombre;
+      lavadorVeh.textContent = lavadoIng.data.nombre_lavador;
       const iconLavador = document.createElement('i');
       iconLavador.classList.add("ri-user-5-fill", "card__icon");
 

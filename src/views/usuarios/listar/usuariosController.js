@@ -90,9 +90,7 @@ async function cargarUsuarios(contendor) {
             celdaCorreo.textContent = usuario.correo;
             celdaTelefono.textContent = usuario.telefono;
             celdaContrasena.textContent = usuario.contrasena;
-
-            const rol = await obtenerDatos(`roles/${usuario.codigo_rol}`);
-            celdaRol.textContent = rol.data.nombre_rol;
+            celdaRol.textContent = usuario.nombre_rol;
 
             // Creo el boton de editar con sus clases y atributos y sus nodos hijos y los agrego.
             const botonEditar = document.createElement("button");
@@ -158,16 +156,6 @@ async function cargarUsuarios(contendor) {
 
 // Funcion para borrar de la base de datos el id y para eliminar la tupla en la tabla.
 async function eliminarusuario(id) {
-    // Se realiza la peticion para obtener lavados por el id o codigo del usuario.
-    const lavadoExist = await obtenerDatos(`lavados/usuario/${id}`);
-
-    // Si el codigo de respuesta de la peticion es 200. Es decir, existe un lavado con ese usuario relacionado.
-    if (lavadoExist.code == 200) {
-        // Muestro mensaje de error ya que no se puede eliminar ese usuario y retorno.
-        errorAlert("¡Ups! No se puede eliminar el usuario", "Este usuario ya pertenece a un lavado");
-        return;
-    }
-
     // Se realiza la peticion para eliminar el usuario por el id.
     const peticion = await eliminarDato("usuarios", id);
     // Si el codigo de la respuesta el 200. Es decir, el usuario ya se eliminó de la base de datos...
@@ -177,6 +165,8 @@ async function eliminarusuario(id) {
         fila.remove();
         // Por ultimo muestro una alerta de exito indicando que el usuario se eliminó.
         successAlert("usuario eliminado correctamente");
+    }else{
+        errorAlert(`¡Ups! ${peticion.message}` , peticion.errors);
     }
 }
 

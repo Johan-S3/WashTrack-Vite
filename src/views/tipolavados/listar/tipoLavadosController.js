@@ -125,16 +125,6 @@ async function cargarTipoLavados(contendor){
 
 // Funcion para borrar de la base de datos el id y para eliminar la tupla en la tabla.
 async function eliminarTipoLavado(id) {
-    // Se realiza la peticion para obtener lavados por el id del tipo de lavado.
-    const tipoLavadoExist = await obtenerDatos(`lavados/tipolavado/${id}`);
-
-    // Si el codigo de respuesta de la peticion es 200. Es decir, existe un lavado con ese tipo de lavado relacionado.
-    if(tipoLavadoExist.code == 200){
-        // Muestro mensaje de error ya que no se puede eliminar ese tipo de lavado y retorno.
-        errorAlert("¡Ups! No se puede eliminar el tipo de lavado", "Este tipo de lavado ya pertenece a un lavado");
-        return;
-    }
-
     // Se realiza la peticion para eliminar el tipo de lavado por el id.
     const peticion = await eliminarDato("tipolavados", id);
     // Si el codigo de la respuesta el 200. Es decir, el tipo de lavado ya se eliminó de la base de datos...
@@ -144,6 +134,8 @@ async function eliminarTipoLavado(id) {
         fila.remove();
         // Por ultimo muestro una alerta de exito indicando que el tipo de lavado se eliminó.
         successAlert("Tipo de lavado eliminado correctamente");
+    }else{
+        errorAlert(`¡Ups! ${peticion.message}` , peticion.errors);
     }
 }
 

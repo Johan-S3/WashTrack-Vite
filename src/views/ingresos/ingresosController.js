@@ -28,7 +28,7 @@ export const ingresosController = async (parametros = null) => {
     let totalIng = await cargarIngresos(bodyTable);
     
     console.log(totalIng);
-    ingresoD.textContent = totalIng;
+    ingresoD.textContent = "$ " + totalIng;
 
 
     /* ------------------ EVENTOS ------------------  */

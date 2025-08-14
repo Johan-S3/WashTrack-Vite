@@ -13,6 +13,9 @@ export const actualizarUsuariosController = async (parametros = null) => {
     // Llamo la funcion que carga los roles
     cargarRoles();
 
+    // Recibo los datos del usuario del localStorage
+    const datosUsuario = JSON.parse(localStorage.getItem("usuario"));
+
     // Obtengo la referencia del formulario por el ID
     const formRegistro = document.getElementById("form-Registro");
 
@@ -36,6 +39,8 @@ export const actualizarUsuariosController = async (parametros = null) => {
     correo.value = data.correo;
     telefono.value = data.telefono;
     selectRol.value = data.codigo_rol;
+
+    if(data.codigo_rol == 1) selectRol.disabled = true;
     
 
     /* ------------------ EVENTOS ------------------  */
